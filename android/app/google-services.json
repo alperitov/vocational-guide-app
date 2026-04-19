@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "888671457537",
+    "project_id": "vocational-guide-project",
+    "storage_bucket": "vocational-guide-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888671457537:android:84706871bfbc1e66e58b00",
+        "android_client_info": {
+          "package_name": "com.example.guivo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888671457537-5r6rameejeof7npj8g57hor6qivlo84c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.guivo",
+            "certificate_hash": "b8b3cc0d053fedba9cf2c11aba0523344f432198"
+          }
+        },
+        {
+          "client_id": "888671457537-808num23pfqhb6hhbt30k26i5ar8essr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGLzeGI2ANY-HPcRWTE21RzGtyay8Ul64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888671457537-808num23pfqhb6hhbt30k26i5ar8essr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
