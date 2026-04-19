@@ -11,6 +11,7 @@ import '../../features/home/presentation/main_shell.dart';
 import '../../features/onboarding/application/onboarding_providers.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/results/presentation/results_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -83,14 +84,12 @@ GoRouter appRouter(Ref ref) {
             builder: (context, state) => const QuizScreen(),
           ),
           GoRoute(
-            path: AppRoutes.results,
-            builder: (context, state) => const Scaffold(
-              body: Center(child: Text('Resultados — em breve')),
-            ),
-          ),
-          GoRoute(
             path: AppRoutes.profile,
             builder: (context, state) => const ProfileScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.results,
+            builder: (context, state) => const ResultsScreen(),
           ),
         ],
       ),
