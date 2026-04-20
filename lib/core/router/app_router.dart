@@ -11,6 +11,7 @@ import '../../features/home/presentation/main_shell.dart';
 import '../../features/onboarding/application/onboarding_providers.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/results/presentation/history_screen.dart';
 import '../../features/results/presentation/results_screen.dart';
 
 part 'app_router.g.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const quiz = '/quiz';
   static const results = '/results';
   static const profile = '/profile';
+  static const history = '/history';
 }
 
 @riverpod
@@ -90,6 +92,10 @@ GoRouter appRouter(Ref ref) {
           GoRoute(
             path: AppRoutes.results,
             builder: (context, state) => const ResultsScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.history,
+            builder: (context, state) => const HistoryScreen(),
           ),
         ],
       ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/theme/toggle_theme.dart';
+import '../../../data/models/student_profile.dart';
+import '../../../data/models/provincia.dart';
 import '../../../features/auth/application/auth_providers.dart';
 import '../../../features/auth/data/auth_repository.dart';
+import 'package:guivo/core/theme/toggle_theme.dart';
+import '../application/profile_providers.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -10,12 +13,36 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authRepositoryProvider).currentUser;
+    final profileAsync = ref.watch(studentProfileProvider);
     final themeMode = ref.watch(themeModeProvider).value ?? ThemeMode.light;
     final isDark = themeMode == ThemeMode.dark;
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil')),
+      appBar: AppBar(
+        title: const Text('Perfil'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            tooltip: 'Editar perfil',
+            onPressed: () => profileAsync.whenData((profile) {
+              if (profile != null) {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
+                  ),
+                  builder: (_) => ProfileEditSheet(profile: profile),
+                );
+              }
+            }),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -54,7 +81,23 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 32),
 
-            // Definições
+            // Dados do perfil
+            profileAsync.when(
+              loading: () => const CircularProgressIndicator(),
+              error: (e, _) => Text('Erro: $e'),
+              data: (profile) {
+                if (profile == null) {
+                  return Text(
+                    'Perfil não encontrado',
+                    style: theme.textTheme.bodyMedium,
+                  );
+                }
+                return _ProfileInfoCard(profile: profile);
+              },
+            ),
+            const Divider(height: 40),
+
+            // Tema
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -67,7 +110,7 @@ class ProfileScreen extends ConsumerWidget {
                 onChanged: (_) => ref.read(themeModeProvider.notifier).toggle(),
               ),
             ),
-            const Divider(height: 32),
+            const SizedBox(height: 8),
 
             // Logout
             ListTile(
@@ -83,6 +126,377 @@ class ProfileScreen extends ConsumerWidget {
                 style: TextStyle(color: theme.colorScheme.error),
               ),
               onTap: () => ref.read(authNotifierProvider.notifier).signOut(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileInfoCard extends StatelessWidget {
+  const _ProfileInfoCard({required this.profile});
+  final StudentProfile profile;
+
+  static const _classeLabels = {
+    Classe.decima: '10ª Classe',
+    Classe.decimaPrimeira: '11ª Classe',
+    Classe.decimaSegunda: '12ª Classe',
+  };
+
+  static const _areaLabels = {
+    AreaEstudo.ciencias: 'Ciências',
+    AreaEstudo.letras: 'Letras',
+    AreaEstudo.artes: 'Artes',
+    AreaEstudo.comercial: 'Comercial',
+    AreaEstudo.outro: 'Outro',
+  };
+
+  static const _generoLabels = {
+    Genero.masculino: 'Masculino',
+    Genero.feminino: 'Feminino',
+    Genero.prefiroNaoDizer: 'Prefiro não dizer',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Informação pessoal',
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        _InfoTile(
+          icon: Icons.person_outline,
+          label: 'Nome',
+          value: profile.nome,
+        ),
+        if (profile.dataNascimento != null)
+          _InfoTile(
+            icon: Icons.cake_outlined,
+            label: 'Data de nascimento',
+            value:
+                '${profile.dataNascimento!.day}/${profile.dataNascimento!.month}/${profile.dataNascimento!.year}',
+          ),
+        if (profile.genero != null)
+          _InfoTile(
+            icon: Icons.wc_outlined,
+            label: 'Género',
+            value: _generoLabels[profile.genero] ?? '',
+          ),
+        const SizedBox(height: 20),
+        Text(
+          'Informação académica',
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        if (profile.provincia != null)
+          _InfoTile(
+            icon: Icons.location_on_outlined,
+            label: 'Província',
+            value: profile.provincia!,
+          ),
+        if (profile.escola != null)
+          _InfoTile(
+            icon: Icons.school_outlined,
+            label: 'Escola',
+            value: profile.escola!,
+          ),
+        if (profile.classe != null)
+          _InfoTile(
+            icon: Icons.class_outlined,
+            label: 'Classe',
+            value: _classeLabels[profile.classe] ?? '',
+          ),
+        if (profile.areaEstudo != null)
+          _InfoTile(
+            icon: Icons.book_outlined,
+            label: 'Área de estudo',
+            value: _areaLabels[profile.areaEstudo] ?? '',
+          ),
+        if (profile.interesses.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          Text(
+            'Interesses',
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: profile.interesses
+                .map(
+                  (i) => Chip(
+                    label: Text(i, style: theme.textTheme.labelSmall),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _InfoTile extends StatelessWidget {
+  const _InfoTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: theme.colorScheme.onSurfaceVariant),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              Text(value, style: theme.textTheme.bodyMedium),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Bottom sheet de edição
+class ProfileEditSheet extends ConsumerStatefulWidget {
+  const ProfileEditSheet({super.key, required this.profile});
+  final StudentProfile profile;
+
+  @override
+  ConsumerState<ProfileEditSheet> createState() => _ProfileEditSheetState();
+}
+
+class _ProfileEditSheetState extends ConsumerState<ProfileEditSheet> {
+  late final TextEditingController _nomeController;
+  late final TextEditingController _escolaController;
+  late StudentProfile _profile;
+
+  static const _classeLabels = {
+    Classe.decima: '10ª Classe',
+    Classe.decimaPrimeira: '11ª Classe',
+    Classe.decimaSegunda: '12ª Classe',
+  };
+
+  static const _areaLabels = {
+    AreaEstudo.ciencias: 'Ciências',
+    AreaEstudo.letras: 'Letras',
+    AreaEstudo.artes: 'Artes',
+    AreaEstudo.comercial: 'Comercial',
+    AreaEstudo.outro: 'Outro',
+  };
+
+  static const _generoLabels = {
+    Genero.masculino: 'Masculino',
+    Genero.feminino: 'Feminino',
+    Genero.prefiroNaoDizer: 'Prefiro não dizer',
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _profile = widget.profile;
+    _nomeController = TextEditingController(text: _profile.nome);
+    _escolaController = TextEditingController(text: _profile.escola ?? '');
+  }
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _escolaController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    final updated = _profile.copyWith(
+      nome: _nomeController.text.trim(),
+      escola: _escolaController.text.trim(),
+    );
+    await ref.read(profileEditorNotifierProvider.notifier).saveProfile(updated);
+    if (mounted) Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isSaving = ref.watch(profileEditorNotifierProvider).isLoading;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        24,
+        24,
+        24,
+        MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Editar perfil',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Nome
+            TextFormField(
+              controller: _nomeController,
+              decoration: InputDecoration(
+                labelText: 'Nome completo',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                filled: true,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Género
+            Text('Género', style: theme.textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              children: Genero.values
+                  .map(
+                    (g) => ChoiceChip(
+                      label: Text(_generoLabels[g]!),
+                      selected: _profile.genero == g,
+                      onSelected: (_) => setState(
+                        () => _profile = _profile.copyWith(genero: g),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 16),
+
+            // Província
+            DropdownButtonFormField<String>(
+              value: _profile.provincia,
+              decoration: InputDecoration(
+                labelText: 'Província',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                filled: true,
+              ),
+              items: Provincias.lista
+                  .map((p) => DropdownMenuItem(value: p, child: Text(p)))
+                  .toList(),
+              onChanged: (v) =>
+                  setState(() => _profile = _profile.copyWith(provincia: v)),
+            ),
+            const SizedBox(height: 16),
+
+            // Escola
+            TextFormField(
+              controller: _escolaController,
+              decoration: InputDecoration(
+                labelText: 'Escola',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                filled: true,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Classe
+            Text('Classe', style: theme.textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              children: Classe.values
+                  .map(
+                    (c) => ChoiceChip(
+                      label: Text(_classeLabels[c]!),
+                      selected: _profile.classe == c,
+                      onSelected: (_) => setState(
+                        () => _profile = _profile.copyWith(classe: c),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 16),
+
+            // Área de estudo
+            Text('Área de estudo', style: theme.textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: AreaEstudo.values
+                  .map(
+                    (a) => ChoiceChip(
+                      label: Text(_areaLabels[a]!),
+                      selected: _profile.areaEstudo == a,
+                      onSelected: (_) => setState(
+                        () => _profile = _profile.copyWith(areaEstudo: a),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 32),
+
+            // Guardar
+            FilledButton(
+              onPressed: isSaving ? null : _save,
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: isSaving
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Text('Guardar alterações'),
             ),
           ],
         ),

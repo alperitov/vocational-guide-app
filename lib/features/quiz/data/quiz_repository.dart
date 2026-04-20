@@ -22,6 +22,16 @@ class QuizRepository {
     return session;
   }
 
+  Future<void> deleteSession(String sessionId) async {
+    final db = await _db.database;
+    await db.delete('quiz_sessions', where: 'id = ?', whereArgs: [sessionId]);
+  }
+
+  Future<void> deleteAllSessions(String userId) async {
+    final db = await _db.database;
+    await db.delete('quiz_sessions', where: 'user_id = ?', whereArgs: [userId]);
+  }
+
   Future<void> saveSession(QuizSession session) async {
     final db = await _db.database;
     await db.update(

@@ -58,6 +58,8 @@ class ResultsScreen extends ConsumerWidget {
     final sessionAsync = ref.watch(latestQuizSessionProvider);
     final theme = Theme.of(context);
 
+    ref.invalidate(latestQuizSessionProvider);
+
     return sessionAsync.when(
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
@@ -104,6 +106,11 @@ class ResultsScreen extends ConsumerWidget {
           appBar: AppBar(
             title: const Text('Os teus resultados'),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.history_rounded),
+                tooltip: 'Histórico',
+                onPressed: () => context.go(AppRoutes.history),
+              ),
               IconButton(
                 icon: const Icon(Icons.refresh_rounded),
                 tooltip: 'Refazer teste',
