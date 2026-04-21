@@ -25,7 +25,7 @@ final studentProfileProvider =
 // ignore: unused_element
 typedef StudentProfileRef = AutoDisposeFutureProviderRef<StudentProfile?>;
 String _$profileEditorNotifierHash() =>
-    r'fb07c927bedb22b841d406d617f96dd92c32e30c';
+    r'2ace09bf3cfb427744dc9194d9217740181ec5c4';
 
 /// See also [ProfileEditorNotifier].
 @ProviderFor(ProfileEditorNotifier)

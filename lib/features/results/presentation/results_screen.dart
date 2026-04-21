@@ -58,8 +58,6 @@ class ResultsScreen extends ConsumerWidget {
     final sessionAsync = ref.watch(latestQuizSessionProvider);
     final theme = Theme.of(context);
 
-    ref.invalidate(latestQuizSessionProvider);
-
     return sessionAsync.when(
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),

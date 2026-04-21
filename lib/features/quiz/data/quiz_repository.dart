@@ -54,8 +54,16 @@ class QuizRepository {
   }
 
   Future<QuizSession?> getLatestSession(String userId) async {
-    final sessions = await getSessionsByUser(userId);
-    return sessions.isEmpty ? null : sessions.first;
+    final db = await _db.database;
+    final result = await db.query(
+      'quiz_sessions',
+      where: 'user_id = ? AND completado_em IS NOT NULL',
+      whereArgs: [userId],
+      orderBy: 'completado_em DESC',
+      limit: 1,
+    );
+    if (result.isEmpty) return null;
+    return _fromMap(result.first);
   }
 
   Map<String, dynamic> _toMap(QuizSession s) => {

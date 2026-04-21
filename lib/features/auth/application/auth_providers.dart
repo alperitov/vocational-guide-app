@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/auth_repository.dart';
+import '../../../data/remote/firebase_sync_service.dart';
 
 part 'auth_providers.g.dart';
 
@@ -44,9 +45,14 @@ class AuthNotifier extends _$AuthNotifier {
   }) async {
     state = AuthStatus.loading;
     try {
-      await ref
+      final credential = await ref
           .read(authRepositoryProvider)
           .loginWithEmail(email: email, password: password);
+      // Puxa dados do Firebase após login
+      final uid = credential.user?.uid;
+      if (uid != null) {
+        ref.read(firebaseSyncServiceProvider).pullProfile(uid);
+      }
       state = AuthStatus.authenticated;
       return null;
     } on FirebaseAuthException catch (e) {
@@ -60,9 +66,13 @@ class AuthNotifier extends _$AuthNotifier {
     try {
       final result = await ref.read(authRepositoryProvider).loginWithGoogle();
       if (result == null) {
-        // Utilizador cancelou
         state = AuthStatus.unauthenticated;
         return null;
+      }
+      // Puxa dados do Firebase após login
+      final uid = result.user?.uid;
+      if (uid != null) {
+        ref.read(firebaseSyncServiceProvider).pullProfile(uid);
       }
       state = AuthStatus.authenticated;
       return null;

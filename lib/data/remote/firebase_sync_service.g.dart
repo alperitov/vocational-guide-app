@@ -1,27 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_router.dart';
+part of 'firebase_sync_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appRouterHash() => r'eff6dfee991bab5cf25279333fff1039f7cee49f';
+String _$firebaseSyncServiceHash() =>
+    r'b7b9a25e307ffabe204451de37b6ba17d07a5141';
 
-/// See also [appRouter].
-@ProviderFor(appRouter)
-final appRouterProvider = AutoDisposeProvider<GoRouter>.internal(
-  appRouter,
-  name: r'appRouterProvider',
+/// See also [firebaseSyncService].
+@ProviderFor(firebaseSyncService)
+final firebaseSyncServiceProvider = Provider<FirebaseSyncService>.internal(
+  firebaseSyncService,
+  name: r'firebaseSyncServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$appRouterHash,
+      : _$firebaseSyncServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AppRouterRef = AutoDisposeProviderRef<GoRouter>;
+typedef FirebaseSyncServiceRef = ProviderRef<FirebaseSyncService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

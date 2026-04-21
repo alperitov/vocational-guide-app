@@ -25,7 +25,7 @@ final onboardingCompletoProvider = AutoDisposeFutureProvider<bool>.internal(
 // ignore: unused_element
 typedef OnboardingCompletoRef = AutoDisposeFutureProviderRef<bool>;
 String _$onboardingNotifierHash() =>
-    r'fc13ce5b92c11781641251ed8b91ddd45b78008d';
+    r'edf272a47bd0114e0e3211ed62a6c51be69fb871';
 
 /// See also [OnboardingNotifier].
 @ProviderFor(OnboardingNotifier)

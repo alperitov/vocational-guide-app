@@ -1,8 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/models/quiz_models.dart';
 import '../../../features/auth/data/auth_repository.dart';
+import '../../results/application/results_providers.dart';
 import '../data/quiz_questions.dart';
 import '../data/quiz_repository.dart';
+import '../../../data/remote/firebase_sync_service.dart';
 
 part 'quiz_providers.g.dart';
 
@@ -83,14 +85,12 @@ class QuizNotifier extends _$QuizNotifier {
   }
 
   Future<void> _concluirQuiz(QuizSession session) async {
-    // Calcula os resultados por dimensão
     final scores = <String, double>{};
     for (final dim in RiasecDimension.values) {
       final perguntas = kQuizQuestions.where((q) => q.dimensao == dim);
       final total = perguntas
           .map((q) => session.respostas[q.id] ?? 0)
           .fold(0, (a, b) => a + b);
-      // Normaliza para 0-100
       scores[dim.name] = (total / (perguntas.length * 5)) * 100;
     }
 
@@ -99,7 +99,15 @@ class QuizNotifier extends _$QuizNotifier {
       resultados: scores,
     );
 
+    // Guarda localmente
     await ref.read(quizRepositoryProvider).saveSession(sessionCompleta);
+    // Sincroniza com Firebase em background
+    ref.read(firebaseSyncServiceProvider).syncSession(sessionCompleta);
+
+    // Invalida os providers de resultados
+    ref.invalidate(latestQuizSessionProvider);
+    ref.invalidate(quizHistoryProvider);
+
     state = state.copyWith(session: sessionCompleta, isComplete: true);
   }
 }

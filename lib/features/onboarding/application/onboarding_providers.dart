@@ -3,6 +3,7 @@ import '../../../data/models/student_profile.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import '../../../data/local/profile_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/remote/firebase_sync_service.dart';
 
 part 'onboarding_providers.g.dart';
 
@@ -42,7 +43,10 @@ class OnboardingNotifier extends _$OnboardingNotifier {
       criadoEm: state.criadoEm ?? DateTime.now(),
     );
     state = perfil;
+    // Guarda localmente
     await ref.read(profileRepositoryProvider).saveProfile(perfil);
+    // Sincroniza com Firebase em background
+    ref.read(firebaseSyncServiceProvider).syncProfile(perfil);
   }
 }
 

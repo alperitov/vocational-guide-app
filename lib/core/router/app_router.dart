@@ -35,7 +35,6 @@ GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: AppRoutes.login,
     redirect: (context, state) {
-      // Enquanto o auth ainda está a carregar, não redireciona
       if (authState.isLoading) return null;
 
       final isLoggedIn = authState.valueOrNull != null;
@@ -47,7 +46,6 @@ GoRouter appRouter(Ref ref) {
       if (!isLoggedIn && !isAuthRoute) return AppRoutes.login;
 
       if (isLoggedIn && isAuthRoute) {
-        // Enquanto o onboarding ainda está a carregar, aguarda
         if (onboardingState.isLoading) return null;
         final completou = onboardingState.valueOrNull ?? false;
         return completou ? AppRoutes.home : AppRoutes.onboarding;
@@ -86,16 +84,16 @@ GoRouter appRouter(Ref ref) {
             builder: (context, state) => const QuizScreen(),
           ),
           GoRoute(
-            path: AppRoutes.profile,
-            builder: (context, state) => const ProfileScreen(),
-          ),
-          GoRoute(
             path: AppRoutes.results,
             builder: (context, state) => const ResultsScreen(),
           ),
           GoRoute(
             path: AppRoutes.history,
             builder: (context, state) => const HistoryScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.profile,
+            builder: (context, state) => const ProfileScreen(),
           ),
         ],
       ),

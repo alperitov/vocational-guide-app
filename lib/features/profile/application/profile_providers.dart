@@ -3,6 +3,7 @@ import '../../../data/local/profile_repository.dart';
 import '../../../data/models/student_profile.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/remote/firebase_sync_service.dart';
 
 part 'profile_providers.g.dart';
 
@@ -25,6 +26,8 @@ class ProfileEditorNotifier extends _$ProfileEditorNotifier {
     state = const AsyncValue.loading();
     try {
       await ref.read(profileRepositoryProvider).saveProfile(profile);
+      // Sincroniza com Firebase em background
+      ref.read(firebaseSyncServiceProvider).syncProfile(profile);
       ref.invalidate(studentProfileProvider);
       state = AsyncValue.data(profile);
     } catch (e, st) {
