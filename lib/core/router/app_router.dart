@@ -30,7 +30,6 @@ class AppRoutes {
 @riverpod
 GoRouter appRouter(Ref ref) {
   final authState = ref.watch(authStateChangesProvider);
-  final onboardingState = ref.watch(onboardingCompletoProvider);
 
   return GoRouter(
     initialLocation: AppRoutes.login,
@@ -41,21 +40,13 @@ GoRouter appRouter(Ref ref) {
       final isAuthRoute =
           state.matchedLocation == AppRoutes.login ||
           state.matchedLocation == AppRoutes.register;
-      final isOnboardingRoute = state.matchedLocation == AppRoutes.onboarding;
 
+      // Não autenticado fora das rotas de auth → login
       if (!isLoggedIn && !isAuthRoute) return AppRoutes.login;
 
-      if (isLoggedIn && isAuthRoute) {
-        if (onboardingState.isLoading) return null;
-        final completou = onboardingState.valueOrNull ?? false;
-        return completou ? AppRoutes.home : AppRoutes.onboarding;
-      }
-
-      if (isLoggedIn && !isOnboardingRoute && !isAuthRoute) {
-        if (onboardingState.isLoading) return null;
-        final completou = onboardingState.valueOrNull ?? false;
-        if (!completou) return AppRoutes.onboarding;
-      }
+      // Autenticado a tentar aceder ao login/registo → home
+      // (só quando já há sessão activa ao abrir a app)
+      if (isLoggedIn && isAuthRoute) return AppRoutes.home;
 
       return null;
     },

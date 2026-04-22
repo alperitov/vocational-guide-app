@@ -17,7 +17,19 @@ class AuthRepository {
   Future<UserCredential> registerWithEmail({
     required String email,
     required String password,
-  }) => _auth.createUserWithEmailAndPassword(email: email, password: password);
+    String? nome,
+  }) async {
+    final credential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    // Actualiza o displayName no Firebase Auth
+    if (nome != null && nome.isNotEmpty) {
+      await credential.user?.updateDisplayName(nome);
+      await credential.user?.reload();
+    }
+    return credential;
+  }
 
   Future<UserCredential> loginWithEmail({
     required String email,

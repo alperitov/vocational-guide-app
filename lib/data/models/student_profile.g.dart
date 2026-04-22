@@ -53,6 +53,8 @@ const _$GeneroEnumMap = {
 };
 
 const _$ClasseEnumMap = {
+  Classe.oitava: 'oitava',
+  Classe.nona: 'nona',
   Classe.decima: 'decima',
   Classe.decimaPrimeira: 'decimaPrimeira',
   Classe.decimaSegunda: 'decimaSegunda',

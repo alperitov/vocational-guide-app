@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/router/app_router.dart';
-import '../../../data/local/profile_repository.dart';
 import '../../../features/auth/data/auth_repository.dart';
+import '../../../features/onboarding/application/onboarding_providers.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -12,6 +12,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authRepositoryProvider).currentUser;
     final theme = Theme.of(context);
+
+    // Verifica onboarding ao entrar no home
+    ref.listen(onboardingCompletoProvider, (_, next) {
+      next.whenData((completou) {
+        if (!completou && context.mounted) {
+          context.go(AppRoutes.onboarding);
+        }
+      });
+    });
 
     return Scaffold(
       appBar: AppBar(

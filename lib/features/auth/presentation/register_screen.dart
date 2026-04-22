@@ -40,11 +40,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         .registerWithEmail(
           email: _emailController.text.trim(),
           password: _passwordController.text,
+          nome: _nameController.text.trim(),
         );
 
     if (error != null && mounted) {
       setState(() => _errorMessage = error);
+      return;
     }
+
+    // Navega explicitamente após registo bem sucedido
+    if (mounted) context.go(AppRoutes.onboarding);
   }
 
   @override

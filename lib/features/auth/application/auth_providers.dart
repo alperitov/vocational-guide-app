@@ -25,14 +25,15 @@ class AuthNotifier extends _$AuthNotifier {
   Future<String?> registerWithEmail({
     required String email,
     required String password,
+    String? nome,
   }) async {
     state = AuthStatus.loading;
     try {
       await ref
           .read(authRepositoryProvider)
-          .registerWithEmail(email: email, password: password);
+          .registerWithEmail(email: email, password: password, nome: nome);
       state = AuthStatus.authenticated;
-      return null; // null = sucesso
+      return null;
     } on FirebaseAuthException catch (e) {
       state = AuthStatus.error;
       return _mapFirebaseError(e.code);

@@ -3,31 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/onboarding_providers.dart';
 import '../../../../data/models/student_profile.dart';
 
-class StepPersonal extends ConsumerStatefulWidget {
+class StepPersonal extends ConsumerWidget {
   const StepPersonal({super.key});
 
   @override
-  ConsumerState<StepPersonal> createState() => _StepPersonalState();
-}
-
-class _StepPersonalState extends ConsumerState<StepPersonal> {
-  late final TextEditingController _nomeController;
-
-  @override
-  void initState() {
-    super.initState();
-    final nome = ref.read(onboardingNotifierProvider).nome;
-    _nomeController = TextEditingController(text: nome);
-  }
-
-  @override
-  void dispose() {
-    _nomeController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(onboardingNotifierProvider);
     final notifier = ref.read(onboardingNotifierProvider.notifier);
     final theme = Theme.of(context);
@@ -52,17 +32,37 @@ class _StepPersonalState extends ConsumerState<StepPersonal> {
           ),
           const SizedBox(height: 32),
 
-          // Nome
-          TextFormField(
-            controller: _nomeController,
-            decoration: InputDecoration(
-              labelText: 'Nome completo',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              filled: true,
+          // Mostra o nome mas não permite editar aqui
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
             ),
-            onChanged: notifier.updateNome,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.person_rounded,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nome',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    Text(
+                      profile.nome.isNotEmpty ? profile.nome : 'Não definido',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 20),
 

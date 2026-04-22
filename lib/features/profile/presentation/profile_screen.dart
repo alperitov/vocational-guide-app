@@ -6,6 +6,9 @@ import '../../../features/auth/application/auth_providers.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import 'package:guivo/core/theme/toggle_theme.dart';
 import '../application/profile_providers.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -17,6 +20,15 @@ class ProfileScreen extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider).value ?? ThemeMode.light;
     final isDark = themeMode == ThemeMode.dark;
     final theme = Theme.of(context);
+    final photoAsync = ref.watch(_localPhotoProvider);
+    final photoPath = photoAsync.valueOrNull;
+
+    String _getInitials(String? displayName) {
+      if (displayName == null || displayName.isEmpty) return 'U';
+      final parts = displayName.trim().split(' ');
+      if (parts.length == 1) return parts[0][0].toUpperCase();
+      return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -48,23 +60,59 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
           children: [
             // Avatar
-            CircleAvatar(
-              radius: 48,
-              backgroundColor: theme.colorScheme.primaryContainer,
-              backgroundImage: user?.photoURL != null
-                  ? NetworkImage(user!.photoURL!)
-                  : null,
-              child: user?.photoURL == null
-                  ? Text(
-                      (user?.displayName?.isNotEmpty == true
-                              ? user!.displayName![0]
-                              : 'U')
-                          .toUpperCase(),
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.onPrimaryContainer,
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                CircleAvatar(
+                  radius: 48,
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  backgroundImage: photoPath != null
+                      ? FileImage(File(photoPath))
+                      : (user?.photoURL != null
+                            ? NetworkImage(user!.photoURL!) as ImageProvider
+                            : null),
+                  child: photoPath == null && user?.photoURL == null
+                      ? Text(
+                          _getInitials(user?.displayName),
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            color: theme.colorScheme.onPrimaryContainer,
+                          ),
+                        )
+                      : null,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final picker = ImagePicker();
+                    final picked = await picker.pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 512,
+                      maxHeight: 512,
+                      imageQuality: 80,
+                    );
+                    if (picked != null) {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setString('photo_${user?.uid}', picked.path);
+                      ref.invalidate(_localPhotoProvider);
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: theme.colorScheme.surface,
+                        width: 2,
                       ),
-                    )
-                  : null,
+                    ),
+                    child: Icon(
+                      Icons.camera_alt_rounded,
+                      size: 16,
+                      color: theme.colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Text(
@@ -125,7 +173,33 @@ class ProfileScreen extends ConsumerWidget {
                 'Terminar sessão',
                 style: TextStyle(color: theme.colorScheme.error),
               ),
-              onTap: () => ref.read(authNotifierProvider.notifier).signOut(),
+              onTap: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Terminar sessão'),
+                    content: const Text(
+                      'Tens a certeza que queres sair da tua conta?',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(false),
+                        child: const Text('Cancelar'),
+                      ),
+                      FilledButton(
+                        onPressed: () => Navigator.of(ctx).pop(true),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: theme.colorScheme.error,
+                        ),
+                        child: const Text('Sair'),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirm == true) {
+                  ref.read(authNotifierProvider.notifier).signOut();
+                }
+              },
             ),
           ],
         ),
@@ -139,6 +213,8 @@ class _ProfileInfoCard extends StatelessWidget {
   final StudentProfile profile;
 
   static const _classeLabels = {
+    Classe.oitava: '8ª Classe',
+    Classe.nona: '9ª Classe',
     Classe.decima: '10ª Classe',
     Classe.decimaPrimeira: '11ª Classe',
     Classe.decimaSegunda: '12ª Classe',
@@ -302,6 +378,8 @@ class _ProfileEditSheetState extends ConsumerState<ProfileEditSheet> {
   late StudentProfile _profile;
 
   static const _classeLabels = {
+    Classe.oitava: '8ª Classe',
+    Classe.nona: '9ª Classe',
     Classe.decima: '10ª Classe',
     Classe.decimaPrimeira: '11ª Classe',
     Classe.decimaSegunda: '12ª Classe',
@@ -503,4 +581,20 @@ class _ProfileEditSheetState extends ConsumerState<ProfileEditSheet> {
       ),
     );
   }
+}
+
+// Provider para foto local
+final _localPhotoProvider = FutureProvider.autoDispose<String?>((ref) async {
+  final user = ref.watch(authRepositoryProvider).currentUser;
+  if (user == null) return null;
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('photo_${user.uid}');
+});
+
+// Função de iniciais
+String _getInitials(String? displayName) {
+  if (displayName == null || displayName.isEmpty) return 'U';
+  final parts = displayName.trim().split(' ');
+  if (parts.length == 1) return parts[0][0].toUpperCase();
+  return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
 }

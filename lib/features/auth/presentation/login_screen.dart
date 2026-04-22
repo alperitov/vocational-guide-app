@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../application/auth_providers.dart';
 import '../../../core/router/app_router.dart';
 import 'widgets/auth_text_field.dart';
+import '../../../features/onboarding/application/onboarding_providers.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -39,6 +40,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     if (error != null && mounted) {
       setState(() => _errorMessage = error);
+      return;
+    }
+
+    if (mounted) {
+      final completou = await ref.read(onboardingCompletoProvider.future);
+      context.go(completou ? AppRoutes.home : AppRoutes.onboarding);
     }
   }
 
@@ -47,8 +54,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final error = await ref
         .read(authNotifierProvider.notifier)
         .loginWithGoogle();
+
     if (error != null && mounted) {
       setState(() => _errorMessage = error);
+      return;
+    }
+
+    if (mounted) {
+      final completou = await ref.read(onboardingCompletoProvider.future);
+      context.go(completou ? AppRoutes.home : AppRoutes.onboarding);
     }
   }
 

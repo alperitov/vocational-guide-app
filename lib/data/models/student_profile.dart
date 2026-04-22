@@ -5,7 +5,7 @@ part 'student_profile.g.dart';
 
 enum Genero { masculino, feminino, prefiroNaoDizer }
 
-enum Classe { decima, decimaPrimeira, decimaSegunda }
+enum Classe { oitava, nona, decima, decimaPrimeira, decimaSegunda }
 
 enum AreaEstudo { ciencias, letras, artes, comercial, outro }
 

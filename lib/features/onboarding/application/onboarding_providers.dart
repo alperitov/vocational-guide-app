@@ -12,6 +12,8 @@ class OnboardingNotifier extends _$OnboardingNotifier {
   @override
   StudentProfile build() {
     final user = ref.read(authRepositoryProvider).currentUser;
+    // Recarrega o utilizador para garantir que o displayName está actualizado
+    user?.reload();
     return StudentProfile(
       uid: user?.uid ?? '',
       nome: user?.displayName ?? '',

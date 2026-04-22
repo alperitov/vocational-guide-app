@@ -34,6 +34,8 @@ class _StepAcademicState extends ConsumerState<StepAcademic> {
     final theme = Theme.of(context);
 
     final classeLabels = {
+      Classe.oitava: '8ª Classe',
+      Classe.nona: '9ª Classe',
       Classe.decima: '10ª Classe',
       Classe.decimaPrimeira: '11ª Classe',
       Classe.decimaSegunda: '12ª Classe',
