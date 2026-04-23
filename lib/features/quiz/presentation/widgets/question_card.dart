@@ -13,113 +13,150 @@ class QuestionCard extends StatelessWidget {
   final int? selectedScore;
   final ValueChanged<int> onScoreSelected;
 
-  static const _labels = [
-    'Discordo\ntotalmente',
-    'Discordo',
-    'Neutro',
-    'Concordo',
-    'Concordo\ntotalmente',
+  static const _scaleOptions = [
+    (
+      score: 1,
+      label: 'Discordo totalmente',
+      emoji: '😕',
+      color: Color(0xffF44336),
+    ),
+    (score: 2, label: 'Discordo', emoji: '🤔', color: Color(0xffFF9800)),
+    (score: 3, label: 'Neutro', emoji: '😐', color: Color(0xffFFC107)),
+    (score: 4, label: 'Concordo', emoji: '🙂', color: Color(0xff8BC34A)),
+    (
+      score: 5,
+      label: 'Concordo totalmente',
+      emoji: '😄',
+      color: Color(0xff4CAF50),
+    ),
   ];
-  static const _dimensaoLabels = {
-    RiasecDimension.realista: ('🔧', 'Realista'),
-    RiasecDimension.investigativo: ('🔬', 'Investigativo'),
-    RiasecDimension.artistico: ('🎨', 'Artístico'),
-    RiasecDimension.social: ('🤝', 'Social'),
-    RiasecDimension.empreendedor: ('🚀', 'Empreendedor'),
-    RiasecDimension.convencional: ('📋', 'Convencional'),
-  };
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final dimInfo = _dimensaoLabels[question.dimensao]!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Badge da dimensão
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Chip(
-            avatar: Text(dimInfo.$1),
-            label: Text(dimInfo.$2),
-            backgroundColor: theme.colorScheme.secondaryContainer,
+        // Pergunta — ocupa o espaço disponível
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: Text(
+              question.texto,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                height: 1.5,
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
-        const SizedBox(height: 24),
 
-        // Texto da pergunta
-        Text(
-          question.texto,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-            height: 1.4,
+        // Instrução
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Text(
+            'Como te identificas com esta afirmação?',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
-        const Spacer(),
 
-        // Escala 1 a 5
-        Text(
-          'Como te identificas com esta afirmação?',
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(5, (i) {
-            final score = i + 1;
-            final isSelected = selectedScore == score;
-            return GestureDetector(
-              onTap: () => onScoreSelected(score),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: 56,
-                height: 72,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.outline,
-                    width: isSelected ? 2 : 1,
+        // Opções verticais
+        Expanded(
+          flex: 3,
+          child: Column(
+            children: _scaleOptions.map((option) {
+              final isSelected = selectedScore == option.score;
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: GestureDetector(
+                    onTap: () => onScoreSelected(option.score),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOut,
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? option.color
+                            : option.color.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: isSelected
+                              ? option.color
+                              : option.color.withValues(alpha: 0.25),
+                          width: isSelected ? 2 : 1,
+                        ),
+                        boxShadow: isSelected
+                            ? [
+                                BoxShadow(
+                                  color: option.color.withValues(alpha: 0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ]
+                            : [],
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 16),
+                          // Número
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Colors.white.withValues(alpha: 0.25)
+                                  : option.color.withValues(alpha: 0.15),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${option.score}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 15,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : option.color,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          // Label
+                          Expanded(
+                            child: Text(
+                              option.label,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: isSelected
+                                    ? Colors.white
+                                    : theme.colorScheme.onSurface,
+                              ),
+                            ),
+                          ),
+                          // Emoji
+                          Text(
+                            option.emoji,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(width: 16),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '$score',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isSelected
-                            ? theme.colorScheme.onPrimary
-                            : theme.colorScheme.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _labels[i],
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: isSelected
-                            ? theme.colorScheme.onPrimary
-                            : theme.colorScheme.onSurfaceVariant,
-                        fontSize: 8,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
+              );
+            }).toList(),
+          ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 8),
       ],
     );
   }

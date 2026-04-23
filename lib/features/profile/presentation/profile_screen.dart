@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/router/app_router.dart';
 import '../../../data/models/student_profile.dart';
 import '../../../data/models/provincia.dart';
 import '../../../features/auth/application/auth_providers.dart';
@@ -157,6 +159,21 @@ class ProfileScreen extends ConsumerWidget {
                 value: isDark,
                 onChanged: (_) => ref.read(themeModeProvider.notifier).toggle(),
               ),
+            ),
+            const SizedBox(height: 8),
+
+            // Adiciona antes do Divider do logout no ProfileScreen
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              leading: Icon(
+                Icons.history_rounded,
+                color: theme.colorScheme.primary,
+              ),
+              title: const Text('Histórico de testes'),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => context.go(AppRoutes.history),
             ),
             const SizedBox(height: 8),
 

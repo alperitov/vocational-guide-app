@@ -10,6 +10,7 @@ class AuthTextField extends StatelessWidget {
     this.keyboardType,
     this.validator,
     this.suffixIcon,
+    this.prefixIcon,
   });
 
   final TextEditingController controller;
@@ -19,6 +20,7 @@ class AuthTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,9 @@ class AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
+        prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         filled: true,
       ),
     );

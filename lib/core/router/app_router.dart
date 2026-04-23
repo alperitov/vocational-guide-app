@@ -13,6 +13,7 @@ import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/results/presentation/history_screen.dart';
 import '../../features/results/presentation/results_screen.dart';
+import '../../features/splash/presentation/splash_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -25,6 +26,7 @@ class AppRoutes {
   static const results = '/results';
   static const profile = '/profile';
   static const history = '/history';
+  static const splash = '/';
 }
 
 @riverpod
@@ -32,14 +34,15 @@ GoRouter appRouter(Ref ref) {
   final authState = ref.watch(authStateChangesProvider);
 
   return GoRouter(
-    initialLocation: AppRoutes.login,
+    initialLocation: AppRoutes.splash,
     redirect: (context, state) {
       if (authState.isLoading) return null;
 
       final isLoggedIn = authState.valueOrNull != null;
       final isAuthRoute =
           state.matchedLocation == AppRoutes.login ||
-          state.matchedLocation == AppRoutes.register;
+          state.matchedLocation == AppRoutes.register ||
+          state.matchedLocation == AppRoutes.splash;
 
       // Não autenticado fora das rotas de auth → login
       if (!isLoggedIn && !isAuthRoute) return AppRoutes.login;
@@ -63,6 +66,10 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingScreen(),
       ),
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (context, state) => const ProfileScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => MainShell(child: child),
         routes: [
@@ -83,8 +90,8 @@ GoRouter appRouter(Ref ref) {
             builder: (context, state) => const HistoryScreen(),
           ),
           GoRoute(
-            path: AppRoutes.profile,
-            builder: (context, state) => const ProfileScreen(),
+            path: AppRoutes.splash,
+            builder: (context, state) => const SplashScreen(),
           ),
         ],
       ),

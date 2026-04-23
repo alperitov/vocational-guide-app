@@ -5,6 +5,7 @@ import '../../results/application/results_providers.dart';
 import '../data/quiz_questions.dart';
 import '../data/quiz_repository.dart';
 import '../../../data/remote/firebase_sync_service.dart';
+import 'dart:math';
 
 part 'quiz_providers.g.dart';
 
@@ -14,29 +15,35 @@ class QuizState {
     this.currentIndex = 0,
     this.isLoading = false,
     this.isComplete = false,
-  });
+    List<QuizQuestion>? questions,
+  }) : _questions = questions;
 
   final QuizSession? session;
   final int currentIndex;
   final bool isLoading;
   final bool isComplete;
+  final List<QuizQuestion>? _questions;
+
+  List<QuizQuestion> get questions => _questions ?? kQuizQuestions;
 
   QuizState copyWith({
     QuizSession? session,
     int? currentIndex,
     bool? isLoading,
     bool? isComplete,
+    List<QuizQuestion>? questions,
   }) => QuizState(
     session: session ?? this.session,
     currentIndex: currentIndex ?? this.currentIndex,
     isLoading: isLoading ?? this.isLoading,
     isComplete: isComplete ?? this.isComplete,
+    questions: questions ?? _questions,
   );
 
-  int get totalQuestions => kQuizQuestions.length;
+  int get totalQuestions => questions.length;
   double get progress =>
       session == null ? 0 : session!.respostas.length / totalQuestions;
-  QuizQuestion get currentQuestion => kQuizQuestions[currentIndex];
+  QuizQuestion get currentQuestion => questions[currentIndex];
   int? get currentAnswer => session?.respostas[currentQuestion.id];
   bool get isLastQuestion => currentIndex == totalQuestions - 1;
 }
@@ -51,10 +58,34 @@ class QuizNotifier extends _$QuizNotifier {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user == null) return;
 
+    // Mistura as perguntas garantindo alternância de categorias
+    final shuffled = _shuffleRiasec();
     final session = await ref
         .read(quizRepositoryProvider)
         .createSession(user.uid);
-    state = QuizState(session: session);
+    state = QuizState(session: session, questions: shuffled);
+  }
+
+  List<QuizQuestion> _shuffleRiasec() {
+    // Agrupa por dimensão
+    final grouped = <RiasecDimension, List<QuizQuestion>>{};
+    for (final dim in RiasecDimension.values) {
+      grouped[dim] = kQuizQuestions.where((q) => q.dimensao == dim).toList()
+        ..shuffle(Random());
+    }
+
+    // Intercala — uma de cada dimensão de cada vez
+    final result = <QuizQuestion>[];
+    final dims = RiasecDimension.values.toList()..shuffle(Random());
+    final maxPerDim = grouped.values.map((l) => l.length).reduce(max);
+
+    for (int i = 0; i < maxPerDim; i++) {
+      for (final dim in dims) {
+        final list = grouped[dim]!;
+        if (i < list.length) result.add(list[i]);
+      }
+    }
+    return result;
   }
 
   Future<void> responder(int score) async {

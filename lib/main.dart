@@ -28,6 +28,7 @@ class MyApp extends ConsumerWidget {
         darkTheme: darkTheme,
         themeMode: themeMode,
         routerConfig: router,
+        debugShowCheckedModeBanner: false,
       ),
       loading: () => const MaterialApp(
         home: Scaffold(body: Center(child: CircularProgressIndicator())),
