@@ -60,32 +60,35 @@ class ResultsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(20),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    TopDimensions(resultados: resultados),
+                    // TopDimensions(resultados: resultados),
                     const SizedBox(height: 28),
-                    ChartTabSection(resultados: resultados),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: ChartTabSection(resultados: resultados),
+                    ),
                     const SizedBox(height: 28),
                     CoursesTabSection(cursos: cursosSugeridos),
                     const SizedBox(height: 28),
-                    SizedBox(
-                      height: 52,
-                      child: FilledButton.icon(
-                        onPressed: () => context.go(AppRoutes.quiz),
-                        style: FilledButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        icon: PhosphorIcon(PhosphorIcons.arrowsClockwise()),
-                        label: const Text(
-                          'Novo Teste',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
+                    // SizedBox(
+                    //   height: 52,
+                    //   child: FilledButton.icon(
+                    //     onPressed: () => context.go(AppRoutes.quiz),
+                    //     style: FilledButton.styleFrom(
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(14),
+                    //       ),
+                    //     ),
+                    //     icon: PhosphorIcon(PhosphorIcons.arrowsClockwise()),
+                    //     label: const Text(
+                    //       'Novo Teste',
+                    //       style: TextStyle(
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w700,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 32),
                   ]),
                 ),
               ),
