@@ -7,7 +7,7 @@ part 'database_helper.g.dart';
 
 class DatabaseHelper {
   static const _dbName = 'guivo.db';
-  static const _dbVersion = 2;
+  static const _dbVersion = 3;
 
   Database? _db;
 
@@ -66,6 +66,20 @@ class DatabaseHelper {
         completado_em TEXT,
         respostas TEXT NOT NULL DEFAULT '{}',
         resultados TEXT NOT NULL DEFAULT '{}'
+      )
+    ''');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+      CREATE TABLE IF NOT EXISTS favorites (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        item_id TEXT NOT NULL,
+        tipo TEXT NOT NULL,
+        criado_em TEXT NOT NULL,
+        nome TEXT,
+        emoji TEXT,
+        area TEXT
       )
     ''');
     }

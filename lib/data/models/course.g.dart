@@ -17,6 +17,23 @@ _Course _$CourseFromJson(Map<String, dynamic> json) => _Course(
       .map((e) => e as String)
       .toList(),
   descricao: json['descricao'] as String,
+  dimGardner:
+      (json['dimGardner'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
+  dimValores:
+      (json['dimValores'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
+  profissoesRelacionadas:
+      (json['profissoesRelacionadas'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
+  duracao: json['duracao'] as String?,
+  requisitosMinimos: json['requisitosMinimos'] as String?,
 );
 
 Map<String, dynamic> _$CourseToJson(_Course instance) => <String, dynamic>{
@@ -26,4 +43,9 @@ Map<String, dynamic> _$CourseToJson(_Course instance) => <String, dynamic>{
   'dimensoesRiasec': instance.dimensoesRiasec,
   'instituicoes': instance.instituicoes,
   'descricao': instance.descricao,
+  'dimGardner': instance.dimGardner,
+  'dimValores': instance.dimValores,
+  'profissoesRelacionadas': instance.profissoesRelacionadas,
+  'duracao': instance.duracao,
+  'requisitosMinimos': instance.requisitosMinimos,
 };

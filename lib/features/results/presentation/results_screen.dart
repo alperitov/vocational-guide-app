@@ -60,12 +60,9 @@ class ResultsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(20),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    // TopDimensions(resultados: resultados),
+                    TopDimensions(resultados: resultados),
                     const SizedBox(height: 28),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ChartTabSection(resultados: resultados),
-                    ),
+                    ChartTabSection(resultados: resultados),
                     const SizedBox(height: 28),
                     CoursesTabSection(cursos: cursosSugeridos),
                     const SizedBox(height: 28),

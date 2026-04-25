@@ -11,8 +11,11 @@ class MainShell extends ConsumerWidget {
   int _currentIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
     if (location.startsWith('/home')) return 0;
-    if (location.startsWith('/quiz')) return 1;
-    if (location.startsWith('/results')) return 2;
+    if (location.startsWith('/quiz')) return 2;
+    if (location.startsWith('/results')) return 3;
+    if (location.startsWith('/explore')) return 1;
+    if (location.startsWith('/quiz')) return 2;
+    if (location.startsWith('/results')) return 3;
     return 0;
   }
 
@@ -54,10 +57,19 @@ class MainShell extends ConsumerWidget {
                   onTap: () => context.go('/home'),
                 ),
                 _NavItem(
+                  icon: Icons.explore_outlined,
+                  activeIcon: Icons.explore_rounded,
+                  label: 'Explorar',
+                  isActive: currentIndex == 1,
+                  accent: accent,
+                  inactive: inactive,
+                  onTap: () => context.go('/explore'),
+                ),
+                _NavItem(
                   icon: Icons.quiz_outlined,
                   activeIcon: Icons.quiz_rounded,
                   label: 'Teste',
-                  isActive: currentIndex == 1,
+                  isActive: currentIndex == 2,
                   accent: accent,
                   inactive: inactive,
                   onTap: () => context.go('/quiz'),
@@ -66,7 +78,7 @@ class MainShell extends ConsumerWidget {
                   icon: Icons.bar_chart_outlined,
                   activeIcon: Icons.bar_chart_rounded,
                   label: 'Resultados',
-                  isActive: currentIndex == 2,
+                  isActive: currentIndex == 3,
                   accent: accent,
                   inactive: inactive,
                   onTap: () => context.go('/results'),

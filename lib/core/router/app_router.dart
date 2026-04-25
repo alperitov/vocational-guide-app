@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
+import '../../features/explore/presentation/explore_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/home/presentation/main_shell.dart';
 import '../../features/onboarding/application/onboarding_providers.dart';
@@ -14,6 +15,9 @@ import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/results/presentation/history_screen.dart';
 import '../../features/results/presentation/results_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
+import '../../features/explore/presentation/profession_detail_screen.dart';
+import '../../features/explore/presentation/course_detail_screen.dart';
+import '../../features/explore/presentation/explore_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -26,6 +30,7 @@ class AppRoutes {
   static const results = '/results';
   static const profile = '/profile';
   static const history = '/history';
+  static const explore = '/explore';
   static const splash = '/';
 }
 
@@ -92,6 +97,23 @@ GoRouter appRouter(Ref ref) {
           GoRoute(
             path: AppRoutes.splash,
             builder: (context, state) => const SplashScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.explore,
+            builder: (context, state) => const ExploreScreen(),
+            routes: [
+              GoRoute(
+                path: 'profession/:id',
+                builder: (context, state) => ProfessionDetailScreen(
+                  professionId: state.pathParameters['id']!,
+                ),
+              ),
+              GoRoute(
+                path: 'course/:id',
+                builder: (context, state) =>
+                    CourseDetailScreen(courseId: state.pathParameters['id']!),
+              ),
+            ],
           ),
         ],
       ),
