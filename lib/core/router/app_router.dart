@@ -6,32 +6,32 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
+import '../../features/explore/presentation/course_detail_screen.dart';
 import '../../features/explore/presentation/explore_screen.dart';
+import '../../features/explore/presentation/profession_detail_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/home/presentation/main_shell.dart';
-import '../../features/onboarding/application/onboarding_providers.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
+import '../../features/profile/presentation/favorites_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/results/presentation/history_screen.dart';
 import '../../features/results/presentation/results_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
-import '../../features/explore/presentation/profession_detail_screen.dart';
-import '../../features/explore/presentation/course_detail_screen.dart';
-import '../../features/explore/presentation/explore_screen.dart';
 
 part 'app_router.g.dart';
 
 class AppRoutes {
+  static const splash = '/';
   static const login = '/login';
   static const register = '/register';
   static const onboarding = '/onboarding';
   static const home = '/home';
   static const quiz = '/quiz';
   static const results = '/results';
-  static const profile = '/profile';
   static const history = '/history';
   static const explore = '/explore';
-  static const splash = '/';
+  static const profile = '/profile';
+  static const favorites = '/favorites';
 }
 
 @riverpod
@@ -49,16 +49,17 @@ GoRouter appRouter(Ref ref) {
           state.matchedLocation == AppRoutes.register ||
           state.matchedLocation == AppRoutes.splash;
 
-      // Não autenticado fora das rotas de auth → login
       if (!isLoggedIn && !isAuthRoute) return AppRoutes.login;
-
-      // Autenticado a tentar aceder ao login/registo → home
-      // (só quando já há sessão activa ao abrir a app)
       if (isLoggedIn && isAuthRoute) return AppRoutes.home;
 
       return null;
     },
     routes: [
+      // Rotas sem bottom nav
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => const LoginScreen(),
@@ -75,28 +76,22 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.profile,
         builder: (context, state) => const ProfileScreen(),
       ),
+      GoRoute(
+        path: AppRoutes.favorites,
+        builder: (context, state) => const FavoritesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.history,
+        builder: (context, state) => const HistoryScreen(),
+      ),
+
+      // Rotas com bottom nav
       ShellRoute(
         builder: (context, state, child) => MainShell(child: child),
         routes: [
           GoRoute(
             path: AppRoutes.home,
             builder: (context, state) => const HomeScreen(),
-          ),
-          GoRoute(
-            path: AppRoutes.quiz,
-            builder: (context, state) => const QuizScreen(),
-          ),
-          GoRoute(
-            path: AppRoutes.results,
-            builder: (context, state) => const ResultsScreen(),
-          ),
-          GoRoute(
-            path: AppRoutes.history,
-            builder: (context, state) => const HistoryScreen(),
-          ),
-          GoRoute(
-            path: AppRoutes.splash,
-            builder: (context, state) => const SplashScreen(),
           ),
           GoRoute(
             path: AppRoutes.explore,
@@ -114,6 +109,14 @@ GoRouter appRouter(Ref ref) {
                     CourseDetailScreen(courseId: state.pathParameters['id']!),
               ),
             ],
+          ),
+          GoRoute(
+            path: AppRoutes.quiz,
+            builder: (context, state) => const QuizScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.results,
+            builder: (context, state) => const ResultsScreen(),
           ),
         ],
       ),

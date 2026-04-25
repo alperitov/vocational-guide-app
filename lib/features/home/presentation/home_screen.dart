@@ -6,11 +6,11 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/light_theme.dart';
+import '../../../data/remote/feed_repository.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import '../../../features/onboarding/application/onboarding_providers.dart';
 import '../../../features/results/application/results_providers.dart';
 import '../../../features/results/presentation/widgets/results_constants.dart';
-import '../application/feed_providers.dart';
 import 'widgets/feed_card.dart';
 
 final _homePhotoProvider = FutureProvider.autoDispose<String?>((ref) async {
@@ -35,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
     final user = ref.watch(authRepositoryProvider).currentUser;
     final sessionAsync = ref.watch(latestQuizSessionProvider);
     final photoAsync = ref.watch(_homePhotoProvider);
-    final feedAsync = ref.watch(feedProvider);
+    final feedAsync = ref.watch(feedStreamProvider);
     final theme = Theme.of(context);
 
     ref.listen(onboardingCompletoProvider, (_, next) {

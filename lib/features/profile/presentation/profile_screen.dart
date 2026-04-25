@@ -177,6 +177,31 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
 
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              leading: Icon(Icons.favorite_rounded, color: Colors.red.shade400),
+              title: const Text('Os meus favoritos'),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => context.go(AppRoutes.favorites),
+            ),
+            const SizedBox(height: 8),
+
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              leading: Icon(
+                Icons.history_rounded,
+                color: theme.colorScheme.primary,
+              ),
+              title: const Text('Histórico de testes'),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => context.go(AppRoutes.history),
+            ),
+            const SizedBox(height: 8),
+
             // Logout
             ListTile(
               shape: RoundedRectangleBorder(

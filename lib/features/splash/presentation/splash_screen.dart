@@ -26,20 +26,36 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Future<void> _navigate() async {
-    // Espera mínimo 3 segundos para a animação
-    await Future.delayed(const Duration(milliseconds: 3000));
-    if (!mounted) return;
+    // Aguarda mínimo 2.5 segundos E que o Firebase inicialize
+    await Future.wait([
+          Future.delayed(const Duration(milliseconds: 2500)),
+          _getDestination(),
+        ])
+        .then((results) {
+          if (!mounted) return;
+          final destination = results[1] as String;
+          context.go(destination);
+        })
+        .catchError((_) {
+          if (!mounted) return;
+          context.go(AppRoutes.login);
+        });
+  }
 
-    final user = ref.read(authRepositoryProvider).currentUser;
+  Future<String> _getDestination() async {
+    try {
+      final user = ref.read(authRepositoryProvider).currentUser;
+      if (user == null) return AppRoutes.login;
 
-    if (user == null) {
-      context.go(AppRoutes.login);
-      return;
+      // Timeout de 5 segundos para o onboarding
+      final completou = await ref
+          .read(onboardingCompletoProvider.future)
+          .timeout(const Duration(seconds: 5), onTimeout: () => false);
+
+      return completou ? AppRoutes.home : AppRoutes.onboarding;
+    } catch (_) {
+      return AppRoutes.login;
     }
-
-    final completou = await ref.read(onboardingCompletoProvider.future);
-    if (!mounted) return;
-    context.go(completou ? AppRoutes.home : AppRoutes.onboarding);
   }
 
   @override
