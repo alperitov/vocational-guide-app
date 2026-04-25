@@ -11,15 +11,35 @@ class QuizRepository {
   QuizRepository(this._db);
   final DatabaseHelper _db;
 
-  Future<QuizSession> createSession(String userId) async {
+  Future<QuizSession> createSession(
+    String userId, {
+    QuizType tipo = QuizType.riasec,
+  }) async {
     final session = QuizSession(
       id: const Uuid().v4(),
       userId: userId,
       iniciadoEm: DateTime.now(),
+      tipo: tipo,
     );
     final db = await _db.database;
     await db.insert('quiz_sessions', _toMap(session));
     return session;
+  }
+
+  Future<QuizSession?> getLatestSessionByType(
+    String userId,
+    QuizType tipo,
+  ) async {
+    final db = await _db.database;
+    final result = await db.query(
+      'quiz_sessions',
+      where: 'user_id = ? AND tipo = ? AND completado_em IS NOT NULL',
+      whereArgs: [userId, tipo.name],
+      orderBy: 'completado_em DESC',
+      limit: 1,
+    );
+    if (result.isEmpty) return null;
+    return _fromMap(result.first);
   }
 
   Future<void> deleteSession(String sessionId) async {
@@ -73,6 +93,7 @@ class QuizRepository {
     'completado_em': s.completadoEm?.toIso8601String(),
     'respostas': jsonEncode(s.respostas),
     'resultados': jsonEncode(s.resultados),
+    'tipo': s.tipo.name,
   };
 
   QuizSession _fromMap(Map<String, dynamic> m) => QuizSession(
@@ -88,6 +109,7 @@ class QuizRepository {
     resultados: Map<String, double>.from(
       jsonDecode(m['resultados'] as String) as Map,
     ),
+    tipo: QuizType.values.byName(m['tipo'] as String? ?? 'riasec'),
   );
 }
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guivo/features/quiz/presentation/quiz_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../data/models/quiz_models.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
@@ -14,6 +15,7 @@ import '../../features/home/presentation/main_shell.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/favorites_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/quiz/presentation/tests_screen.dart';
 import '../../features/results/presentation/history_screen.dart';
 import '../../features/results/presentation/results_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
@@ -32,6 +34,7 @@ class AppRoutes {
   static const explore = '/explore';
   static const profile = '/profile';
   static const favorites = '/favorites';
+  static const tests = '/tests';
 }
 
 @riverpod
@@ -112,11 +115,21 @@ GoRouter appRouter(Ref ref) {
           ),
           GoRoute(
             path: AppRoutes.quiz,
-            builder: (context, state) => const QuizScreen(),
+            builder: (context, state) {
+              final tipoStr = state.uri.queryParameters['tipo'];
+              final tipo = tipoStr != null
+                  ? QuizType.values.byName(tipoStr)
+                  : QuizType.riasec;
+              return QuizScreen(tipo: tipo);
+            },
           ),
           GoRoute(
             path: AppRoutes.results,
             builder: (context, state) => const ResultsScreen(),
+          ),
+          GoRoute(
+            path: '/tests',
+            builder: (context, state) => const TestsScreen(),
           ),
         ],
       ),

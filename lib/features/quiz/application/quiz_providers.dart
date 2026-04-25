@@ -1,11 +1,12 @@
+import 'dart:math';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/models/quiz_models.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import '../../results/application/results_providers.dart';
 import '../data/quiz_questions.dart';
+import '../data/gardner_questions.dart';
+import '../data/valores_questions.dart';
 import '../data/quiz_repository.dart';
-import '../../../data/remote/firebase_sync_service.dart';
-import 'dart:math';
 
 part 'quiz_providers.g.dart';
 
@@ -53,33 +54,72 @@ class QuizNotifier extends _$QuizNotifier {
   @override
   QuizState build() => const QuizState();
 
-  Future<void> iniciarQuiz() async {
+  Future<void> iniciarQuiz({QuizType tipo = QuizType.riasec}) async {
     state = state.copyWith(isLoading: true);
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user == null) return;
 
-    // Mistura as perguntas garantindo alternância de categorias
-    final shuffled = _shuffleRiasec();
+    final questions = _getQuestions(tipo);
     final session = await ref
         .read(quizRepositoryProvider)
-        .createSession(user.uid);
-    state = QuizState(session: session, questions: shuffled);
+        .createSession(user.uid, tipo: tipo);
+    state = QuizState(session: session, questions: questions);
+  }
+
+  List<QuizQuestion> _getQuestions(QuizType tipo) {
+    return switch (tipo) {
+      QuizType.riasec => _shuffleRiasec(),
+      QuizType.gardner => _shuffleGardner(),
+      QuizType.valores => _shuffleValores(),
+    };
   }
 
   List<QuizQuestion> _shuffleRiasec() {
-    // Agrupa por dimensão
     final grouped = <RiasecDimension, List<QuizQuestion>>{};
     for (final dim in RiasecDimension.values) {
       grouped[dim] = kQuizQuestions.where((q) => q.dimensao == dim).toList()
         ..shuffle(Random());
     }
-
-    // Intercala — uma de cada dimensão de cada vez
     final result = <QuizQuestion>[];
     final dims = RiasecDimension.values.toList()..shuffle(Random());
     final maxPerDim = grouped.values.map((l) => l.length).reduce(max);
-
     for (int i = 0; i < maxPerDim; i++) {
+      for (final dim in dims) {
+        final list = grouped[dim]!;
+        if (i < list.length) result.add(list[i]);
+      }
+    }
+    return result;
+  }
+
+  List<QuizQuestion> _shuffleGardner() {
+    final grouped = <GardnerDimension, List<QuizQuestion>>{};
+    for (final dim in GardnerDimension.values) {
+      grouped[dim] =
+          kGardnerQuestions.where((q) => q.gardnerDimensao == dim).toList()
+            ..shuffle(Random());
+    }
+    final result = <QuizQuestion>[];
+    final dims = GardnerDimension.values.toList()..shuffle(Random());
+    for (int i = 0; i < 3; i++) {
+      for (final dim in dims) {
+        final list = grouped[dim]!;
+        if (i < list.length) result.add(list[i]);
+      }
+    }
+    return result;
+  }
+
+  List<QuizQuestion> _shuffleValores() {
+    final grouped = <ValoresDimension, List<QuizQuestion>>{};
+    for (final dim in ValoresDimension.values) {
+      grouped[dim] =
+          kValoresQuestions.where((q) => q.valoresDimensao == dim).toList()
+            ..shuffle(Random());
+    }
+    final result = <QuizQuestion>[];
+    final dims = ValoresDimension.values.toList()..shuffle(Random());
+    for (int i = 0; i < 3; i++) {
       for (final dim in dims) {
         final list = grouped[dim]!;
         if (i < list.length) result.add(list[i]);
@@ -94,11 +134,9 @@ class QuizNotifier extends _$QuizNotifier {
 
     final novasRespostas = Map<String, int>.from(session.respostas)
       ..[state.currentQuestion.id] = score;
-
     final novaSession = session.copyWith(respostas: novasRespostas);
     state = state.copyWith(session: novaSession);
 
-    // Avança automaticamente para a próxima pergunta
     if (!state.isLastQuestion) {
       state = state.copyWith(
         session: novaSession,
@@ -117,12 +155,36 @@ class QuizNotifier extends _$QuizNotifier {
 
   Future<void> _concluirQuiz(QuizSession session) async {
     final scores = <String, double>{};
-    for (final dim in RiasecDimension.values) {
-      final perguntas = kQuizQuestions.where((q) => q.dimensao == dim);
-      final total = perguntas
-          .map((q) => session.respostas[q.id] ?? 0)
-          .fold(0, (a, b) => a + b);
-      scores[dim.name] = (total / (perguntas.length * 5)) * 100;
+
+    switch (session.tipo) {
+      case QuizType.riasec:
+        for (final dim in RiasecDimension.values) {
+          final perguntas = kQuizQuestions.where((q) => q.dimensao == dim);
+          final total = perguntas
+              .map((q) => session.respostas[q.id] ?? 0)
+              .fold(0, (a, b) => a + b);
+          scores[dim.name] = (total / (perguntas.length * 5)) * 100;
+        }
+      case QuizType.gardner:
+        for (final dim in GardnerDimension.values) {
+          final perguntas = kGardnerQuestions.where(
+            (q) => q.gardnerDimensao == dim,
+          );
+          final total = perguntas
+              .map((q) => session.respostas[q.id] ?? 0)
+              .fold(0, (a, b) => a + b);
+          scores[dim.name] = (total / (perguntas.length * 5)) * 100;
+        }
+      case QuizType.valores:
+        for (final dim in ValoresDimension.values) {
+          final perguntas = kValoresQuestions.where(
+            (q) => q.valoresDimensao == dim,
+          );
+          final total = perguntas
+              .map((q) => session.respostas[q.id] ?? 0)
+              .fold(0, (a, b) => a + b);
+          scores[dim.name] = (total / (perguntas.length * 5)) * 100;
+        }
     }
 
     final sessionCompleta = session.copyWith(
@@ -130,14 +192,8 @@ class QuizNotifier extends _$QuizNotifier {
       resultados: scores,
     );
 
-    // Guarda localmente
     await ref.read(quizRepositoryProvider).saveSession(sessionCompleta);
-    // Sincroniza com Firebase em background
-    ref.read(firebaseSyncServiceProvider).syncSession(sessionCompleta);
-
-    // Invalida os providers de resultados
-    ref.invalidate(latestQuizSessionProvider);
-    ref.invalidate(quizHistoryProvider);
+    ref.invalidate(latestSessionByTypeProvider(session.tipo));
 
     state = state.copyWith(session: sessionCompleta, isComplete: true);
   }

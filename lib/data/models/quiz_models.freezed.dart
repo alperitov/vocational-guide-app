@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$QuizQuestion {
 
- String get id; String get texto; RiasecDimension get dimensao;
+ String get id; String get texto; RiasecDimension? get dimensao; GardnerDimension? get gardnerDimensao; ValoresDimension? get valoresDimensao; QuizType get tipo;
 /// Create a copy of QuizQuestion
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $QuizQuestionCopyWith<QuizQuestion> get copyWith => _$QuizQuestionCopyWithImpl<Q
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuizQuestion&&(identical(other.id, id) || other.id == id)&&(identical(other.texto, texto) || other.texto == texto)&&(identical(other.dimensao, dimensao) || other.dimensao == dimensao));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuizQuestion&&(identical(other.id, id) || other.id == id)&&(identical(other.texto, texto) || other.texto == texto)&&(identical(other.dimensao, dimensao) || other.dimensao == dimensao)&&(identical(other.gardnerDimensao, gardnerDimensao) || other.gardnerDimensao == gardnerDimensao)&&(identical(other.valoresDimensao, valoresDimensao) || other.valoresDimensao == valoresDimensao)&&(identical(other.tipo, tipo) || other.tipo == tipo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,texto,dimensao);
+int get hashCode => Object.hash(runtimeType,id,texto,dimensao,gardnerDimensao,valoresDimensao,tipo);
 
 @override
 String toString() {
-  return 'QuizQuestion(id: $id, texto: $texto, dimensao: $dimensao)';
+  return 'QuizQuestion(id: $id, texto: $texto, dimensao: $dimensao, gardnerDimensao: $gardnerDimensao, valoresDimensao: $valoresDimensao, tipo: $tipo)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $QuizQuestionCopyWith<$Res>  {
   factory $QuizQuestionCopyWith(QuizQuestion value, $Res Function(QuizQuestion) _then) = _$QuizQuestionCopyWithImpl;
 @useResult
 $Res call({
- String id, String texto, RiasecDimension dimensao
+ String id, String texto, RiasecDimension? dimensao, GardnerDimension? gardnerDimensao, ValoresDimension? valoresDimensao, QuizType tipo
 });
 
 
@@ -65,12 +65,15 @@ class _$QuizQuestionCopyWithImpl<$Res>
 
 /// Create a copy of QuizQuestion
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? texto = null,Object? dimensao = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? texto = null,Object? dimensao = freezed,Object? gardnerDimensao = freezed,Object? valoresDimensao = freezed,Object? tipo = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,texto: null == texto ? _self.texto : texto // ignore: cast_nullable_to_non_nullable
-as String,dimensao: null == dimensao ? _self.dimensao : dimensao // ignore: cast_nullable_to_non_nullable
-as RiasecDimension,
+as String,dimensao: freezed == dimensao ? _self.dimensao : dimensao // ignore: cast_nullable_to_non_nullable
+as RiasecDimension?,gardnerDimensao: freezed == gardnerDimensao ? _self.gardnerDimensao : gardnerDimensao // ignore: cast_nullable_to_non_nullable
+as GardnerDimension?,valoresDimensao: freezed == valoresDimensao ? _self.valoresDimensao : valoresDimensao // ignore: cast_nullable_to_non_nullable
+as ValoresDimension?,tipo: null == tipo ? _self.tipo : tipo // ignore: cast_nullable_to_non_nullable
+as QuizType,
   ));
 }
 
@@ -152,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String texto,  RiasecDimension dimensao)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String texto,  RiasecDimension? dimensao,  GardnerDimension? gardnerDimensao,  ValoresDimension? valoresDimensao,  QuizType tipo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QuizQuestion() when $default != null:
-return $default(_that.id,_that.texto,_that.dimensao);case _:
+return $default(_that.id,_that.texto,_that.dimensao,_that.gardnerDimensao,_that.valoresDimensao,_that.tipo);case _:
   return orElse();
 
 }
@@ -173,10 +176,10 @@ return $default(_that.id,_that.texto,_that.dimensao);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String texto,  RiasecDimension dimensao)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String texto,  RiasecDimension? dimensao,  GardnerDimension? gardnerDimensao,  ValoresDimension? valoresDimensao,  QuizType tipo)  $default,) {final _that = this;
 switch (_that) {
 case _QuizQuestion():
-return $default(_that.id,_that.texto,_that.dimensao);}
+return $default(_that.id,_that.texto,_that.dimensao,_that.gardnerDimensao,_that.valoresDimensao,_that.tipo);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +193,10 @@ return $default(_that.id,_that.texto,_that.dimensao);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String texto,  RiasecDimension dimensao)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String texto,  RiasecDimension? dimensao,  GardnerDimension? gardnerDimensao,  ValoresDimension? valoresDimensao,  QuizType tipo)?  $default,) {final _that = this;
 switch (_that) {
 case _QuizQuestion() when $default != null:
-return $default(_that.id,_that.texto,_that.dimensao);case _:
+return $default(_that.id,_that.texto,_that.dimensao,_that.gardnerDimensao,_that.valoresDimensao,_that.tipo);case _:
   return null;
 
 }
@@ -205,12 +208,15 @@ return $default(_that.id,_that.texto,_that.dimensao);case _:
 @JsonSerializable()
 
 class _QuizQuestion implements QuizQuestion {
-  const _QuizQuestion({required this.id, required this.texto, required this.dimensao});
+  const _QuizQuestion({required this.id, required this.texto, required this.dimensao, this.gardnerDimensao, this.valoresDimensao, this.tipo = QuizType.riasec});
   factory _QuizQuestion.fromJson(Map<String, dynamic> json) => _$QuizQuestionFromJson(json);
 
 @override final  String id;
 @override final  String texto;
-@override final  RiasecDimension dimensao;
+@override final  RiasecDimension? dimensao;
+@override final  GardnerDimension? gardnerDimensao;
+@override final  ValoresDimension? valoresDimensao;
+@override@JsonKey() final  QuizType tipo;
 
 /// Create a copy of QuizQuestion
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuizQuestion&&(identical(other.id, id) || other.id == id)&&(identical(other.texto, texto) || other.texto == texto)&&(identical(other.dimensao, dimensao) || other.dimensao == dimensao));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuizQuestion&&(identical(other.id, id) || other.id == id)&&(identical(other.texto, texto) || other.texto == texto)&&(identical(other.dimensao, dimensao) || other.dimensao == dimensao)&&(identical(other.gardnerDimensao, gardnerDimensao) || other.gardnerDimensao == gardnerDimensao)&&(identical(other.valoresDimensao, valoresDimensao) || other.valoresDimensao == valoresDimensao)&&(identical(other.tipo, tipo) || other.tipo == tipo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,texto,dimensao);
+int get hashCode => Object.hash(runtimeType,id,texto,dimensao,gardnerDimensao,valoresDimensao,tipo);
 
 @override
 String toString() {
-  return 'QuizQuestion(id: $id, texto: $texto, dimensao: $dimensao)';
+  return 'QuizQuestion(id: $id, texto: $texto, dimensao: $dimensao, gardnerDimensao: $gardnerDimensao, valoresDimensao: $valoresDimensao, tipo: $tipo)';
 }
 
 
@@ -245,7 +251,7 @@ abstract mixin class _$QuizQuestionCopyWith<$Res> implements $QuizQuestionCopyWi
   factory _$QuizQuestionCopyWith(_QuizQuestion value, $Res Function(_QuizQuestion) _then) = __$QuizQuestionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String texto, RiasecDimension dimensao
+ String id, String texto, RiasecDimension? dimensao, GardnerDimension? gardnerDimensao, ValoresDimension? valoresDimensao, QuizType tipo
 });
 
 
@@ -262,12 +268,15 @@ class __$QuizQuestionCopyWithImpl<$Res>
 
 /// Create a copy of QuizQuestion
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? texto = null,Object? dimensao = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? texto = null,Object? dimensao = freezed,Object? gardnerDimensao = freezed,Object? valoresDimensao = freezed,Object? tipo = null,}) {
   return _then(_QuizQuestion(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,texto: null == texto ? _self.texto : texto // ignore: cast_nullable_to_non_nullable
-as String,dimensao: null == dimensao ? _self.dimensao : dimensao // ignore: cast_nullable_to_non_nullable
-as RiasecDimension,
+as String,dimensao: freezed == dimensao ? _self.dimensao : dimensao // ignore: cast_nullable_to_non_nullable
+as RiasecDimension?,gardnerDimensao: freezed == gardnerDimensao ? _self.gardnerDimensao : gardnerDimensao // ignore: cast_nullable_to_non_nullable
+as GardnerDimension?,valoresDimensao: freezed == valoresDimensao ? _self.valoresDimensao : valoresDimensao // ignore: cast_nullable_to_non_nullable
+as ValoresDimension?,tipo: null == tipo ? _self.tipo : tipo // ignore: cast_nullable_to_non_nullable
+as QuizType,
   ));
 }
 
@@ -278,7 +287,7 @@ as RiasecDimension,
 /// @nodoc
 mixin _$QuizSession {
 
- String get id; String get userId; DateTime get iniciadoEm; DateTime? get completadoEm; Map<String, int> get respostas; Map<String, double> get resultados;
+ String get id; String get userId; DateTime get iniciadoEm; QuizType get tipo; DateTime? get completadoEm; Map<String, int> get respostas; Map<String, double> get resultados;
 /// Create a copy of QuizSession
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -291,16 +300,16 @@ $QuizSessionCopyWith<QuizSession> get copyWith => _$QuizSessionCopyWithImpl<Quiz
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuizSession&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.iniciadoEm, iniciadoEm) || other.iniciadoEm == iniciadoEm)&&(identical(other.completadoEm, completadoEm) || other.completadoEm == completadoEm)&&const DeepCollectionEquality().equals(other.respostas, respostas)&&const DeepCollectionEquality().equals(other.resultados, resultados));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuizSession&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.iniciadoEm, iniciadoEm) || other.iniciadoEm == iniciadoEm)&&(identical(other.tipo, tipo) || other.tipo == tipo)&&(identical(other.completadoEm, completadoEm) || other.completadoEm == completadoEm)&&const DeepCollectionEquality().equals(other.respostas, respostas)&&const DeepCollectionEquality().equals(other.resultados, resultados));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,iniciadoEm,completadoEm,const DeepCollectionEquality().hash(respostas),const DeepCollectionEquality().hash(resultados));
+int get hashCode => Object.hash(runtimeType,id,userId,iniciadoEm,tipo,completadoEm,const DeepCollectionEquality().hash(respostas),const DeepCollectionEquality().hash(resultados));
 
 @override
 String toString() {
-  return 'QuizSession(id: $id, userId: $userId, iniciadoEm: $iniciadoEm, completadoEm: $completadoEm, respostas: $respostas, resultados: $resultados)';
+  return 'QuizSession(id: $id, userId: $userId, iniciadoEm: $iniciadoEm, tipo: $tipo, completadoEm: $completadoEm, respostas: $respostas, resultados: $resultados)';
 }
 
 
@@ -311,7 +320,7 @@ abstract mixin class $QuizSessionCopyWith<$Res>  {
   factory $QuizSessionCopyWith(QuizSession value, $Res Function(QuizSession) _then) = _$QuizSessionCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, DateTime iniciadoEm, DateTime? completadoEm, Map<String, int> respostas, Map<String, double> resultados
+ String id, String userId, DateTime iniciadoEm, QuizType tipo, DateTime? completadoEm, Map<String, int> respostas, Map<String, double> resultados
 });
 
 
@@ -328,12 +337,13 @@ class _$QuizSessionCopyWithImpl<$Res>
 
 /// Create a copy of QuizSession
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? iniciadoEm = null,Object? completadoEm = freezed,Object? respostas = null,Object? resultados = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? iniciadoEm = null,Object? tipo = null,Object? completadoEm = freezed,Object? respostas = null,Object? resultados = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,iniciadoEm: null == iniciadoEm ? _self.iniciadoEm : iniciadoEm // ignore: cast_nullable_to_non_nullable
-as DateTime,completadoEm: freezed == completadoEm ? _self.completadoEm : completadoEm // ignore: cast_nullable_to_non_nullable
+as DateTime,tipo: null == tipo ? _self.tipo : tipo // ignore: cast_nullable_to_non_nullable
+as QuizType,completadoEm: freezed == completadoEm ? _self.completadoEm : completadoEm // ignore: cast_nullable_to_non_nullable
 as DateTime?,respostas: null == respostas ? _self.respostas : respostas // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,resultados: null == resultados ? _self.resultados : resultados // ignore: cast_nullable_to_non_nullable
 as Map<String, double>,
@@ -418,10 +428,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  DateTime iniciadoEm,  DateTime? completadoEm,  Map<String, int> respostas,  Map<String, double> resultados)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  DateTime iniciadoEm,  QuizType tipo,  DateTime? completadoEm,  Map<String, int> respostas,  Map<String, double> resultados)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QuizSession() when $default != null:
-return $default(_that.id,_that.userId,_that.iniciadoEm,_that.completadoEm,_that.respostas,_that.resultados);case _:
+return $default(_that.id,_that.userId,_that.iniciadoEm,_that.tipo,_that.completadoEm,_that.respostas,_that.resultados);case _:
   return orElse();
 
 }
@@ -439,10 +449,10 @@ return $default(_that.id,_that.userId,_that.iniciadoEm,_that.completadoEm,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  DateTime iniciadoEm,  DateTime? completadoEm,  Map<String, int> respostas,  Map<String, double> resultados)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  DateTime iniciadoEm,  QuizType tipo,  DateTime? completadoEm,  Map<String, int> respostas,  Map<String, double> resultados)  $default,) {final _that = this;
 switch (_that) {
 case _QuizSession():
-return $default(_that.id,_that.userId,_that.iniciadoEm,_that.completadoEm,_that.respostas,_that.resultados);}
+return $default(_that.id,_that.userId,_that.iniciadoEm,_that.tipo,_that.completadoEm,_that.respostas,_that.resultados);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -456,10 +466,10 @@ return $default(_that.id,_that.userId,_that.iniciadoEm,_that.completadoEm,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  DateTime iniciadoEm,  DateTime? completadoEm,  Map<String, int> respostas,  Map<String, double> resultados)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  DateTime iniciadoEm,  QuizType tipo,  DateTime? completadoEm,  Map<String, int> respostas,  Map<String, double> resultados)?  $default,) {final _that = this;
 switch (_that) {
 case _QuizSession() when $default != null:
-return $default(_that.id,_that.userId,_that.iniciadoEm,_that.completadoEm,_that.respostas,_that.resultados);case _:
+return $default(_that.id,_that.userId,_that.iniciadoEm,_that.tipo,_that.completadoEm,_that.respostas,_that.resultados);case _:
   return null;
 
 }
@@ -471,12 +481,13 @@ return $default(_that.id,_that.userId,_that.iniciadoEm,_that.completadoEm,_that.
 @JsonSerializable()
 
 class _QuizSession implements QuizSession {
-  const _QuizSession({required this.id, required this.userId, required this.iniciadoEm, this.completadoEm, final  Map<String, int> respostas = const {}, final  Map<String, double> resultados = const {}}): _respostas = respostas,_resultados = resultados;
+  const _QuizSession({required this.id, required this.userId, required this.iniciadoEm, this.tipo = QuizType.riasec, this.completadoEm, final  Map<String, int> respostas = const {}, final  Map<String, double> resultados = const {}}): _respostas = respostas,_resultados = resultados;
   factory _QuizSession.fromJson(Map<String, dynamic> json) => _$QuizSessionFromJson(json);
 
 @override final  String id;
 @override final  String userId;
 @override final  DateTime iniciadoEm;
+@override@JsonKey() final  QuizType tipo;
 @override final  DateTime? completadoEm;
  final  Map<String, int> _respostas;
 @override@JsonKey() Map<String, int> get respostas {
@@ -506,16 +517,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuizSession&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.iniciadoEm, iniciadoEm) || other.iniciadoEm == iniciadoEm)&&(identical(other.completadoEm, completadoEm) || other.completadoEm == completadoEm)&&const DeepCollectionEquality().equals(other._respostas, _respostas)&&const DeepCollectionEquality().equals(other._resultados, _resultados));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuizSession&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.iniciadoEm, iniciadoEm) || other.iniciadoEm == iniciadoEm)&&(identical(other.tipo, tipo) || other.tipo == tipo)&&(identical(other.completadoEm, completadoEm) || other.completadoEm == completadoEm)&&const DeepCollectionEquality().equals(other._respostas, _respostas)&&const DeepCollectionEquality().equals(other._resultados, _resultados));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,iniciadoEm,completadoEm,const DeepCollectionEquality().hash(_respostas),const DeepCollectionEquality().hash(_resultados));
+int get hashCode => Object.hash(runtimeType,id,userId,iniciadoEm,tipo,completadoEm,const DeepCollectionEquality().hash(_respostas),const DeepCollectionEquality().hash(_resultados));
 
 @override
 String toString() {
-  return 'QuizSession(id: $id, userId: $userId, iniciadoEm: $iniciadoEm, completadoEm: $completadoEm, respostas: $respostas, resultados: $resultados)';
+  return 'QuizSession(id: $id, userId: $userId, iniciadoEm: $iniciadoEm, tipo: $tipo, completadoEm: $completadoEm, respostas: $respostas, resultados: $resultados)';
 }
 
 
@@ -526,7 +537,7 @@ abstract mixin class _$QuizSessionCopyWith<$Res> implements $QuizSessionCopyWith
   factory _$QuizSessionCopyWith(_QuizSession value, $Res Function(_QuizSession) _then) = __$QuizSessionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, DateTime iniciadoEm, DateTime? completadoEm, Map<String, int> respostas, Map<String, double> resultados
+ String id, String userId, DateTime iniciadoEm, QuizType tipo, DateTime? completadoEm, Map<String, int> respostas, Map<String, double> resultados
 });
 
 
@@ -543,12 +554,13 @@ class __$QuizSessionCopyWithImpl<$Res>
 
 /// Create a copy of QuizSession
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? iniciadoEm = null,Object? completadoEm = freezed,Object? respostas = null,Object? resultados = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? iniciadoEm = null,Object? tipo = null,Object? completadoEm = freezed,Object? respostas = null,Object? resultados = null,}) {
   return _then(_QuizSession(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,iniciadoEm: null == iniciadoEm ? _self.iniciadoEm : iniciadoEm // ignore: cast_nullable_to_non_nullable
-as DateTime,completadoEm: freezed == completadoEm ? _self.completadoEm : completadoEm // ignore: cast_nullable_to_non_nullable
+as DateTime,tipo: null == tipo ? _self.tipo : tipo // ignore: cast_nullable_to_non_nullable
+as QuizType,completadoEm: freezed == completadoEm ? _self.completadoEm : completadoEm // ignore: cast_nullable_to_non_nullable
 as DateTime?,respostas: null == respostas ? _self._respostas : respostas // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,resultados: null == resultados ? _self._resultados : resultados // ignore: cast_nullable_to_non_nullable
 as Map<String, double>,

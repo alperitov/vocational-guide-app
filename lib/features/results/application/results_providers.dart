@@ -19,3 +19,12 @@ Future<List<QuizSession>> quizHistory(Ref ref) async {
   if (user == null) return [];
   return ref.read(quizRepositoryProvider).getSessionsByUser(user.uid);
 }
+
+@riverpod
+Future<QuizSession?> latestSessionByType(Ref ref, QuizType tipo) async {
+  final user = ref.watch(authStateChangesProvider).valueOrNull;
+  if (user == null) return null;
+  return ref
+      .read(quizRepositoryProvider)
+      .getLatestSessionByType(user.uid, tipo);
+}

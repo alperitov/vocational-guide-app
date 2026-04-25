@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import '../../../data/models/quiz_models.dart';
 import '../application/quiz_providers.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/light_theme.dart';
 import 'widgets/question_card.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
-  const QuizScreen({super.key});
+  const QuizScreen({super.key, this.tipo = QuizType.riasec});
+  final QuizType tipo;
 
   @override
   ConsumerState<QuizScreen> createState() => _QuizScreenState();
@@ -19,7 +21,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(quizNotifierProvider.notifier).iniciarQuiz();
+      ref.read(quizNotifierProvider.notifier).iniciarQuiz(tipo: widget.tipo);
     });
   }
 
@@ -29,7 +31,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     final theme = Theme.of(context);
 
     ref.listen(quizNotifierProvider, (_, next) {
-      if (next.isComplete) context.go(AppRoutes.results);
+      if (next.isComplete) context.go(AppRoutes.tests);
     });
 
     if (quizState.isLoading || quizState.session == null) {

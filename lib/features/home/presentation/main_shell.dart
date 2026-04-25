@@ -16,6 +16,7 @@ class MainShell extends ConsumerWidget {
     if (location.startsWith('/explore')) return 1;
     if (location.startsWith('/quiz')) return 2;
     if (location.startsWith('/results')) return 3;
+    if (location.startsWith('/tests')) return 1;
     return 0;
   }
 
@@ -68,11 +69,11 @@ class MainShell extends ConsumerWidget {
                 _NavItem(
                   icon: Icons.quiz_outlined,
                   activeIcon: Icons.quiz_rounded,
-                  label: 'Teste',
-                  isActive: currentIndex == 2,
+                  label: 'Testes',
+                  isActive: currentIndex == 1,
                   accent: accent,
                   inactive: inactive,
-                  onTap: () => context.go('/quiz'),
+                  onTap: () => context.go('/tests'),
                 ),
                 _NavItem(
                   icon: Icons.bar_chart_outlined,

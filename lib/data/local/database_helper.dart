@@ -7,7 +7,7 @@ part 'database_helper.g.dart';
 
 class DatabaseHelper {
   static const _dbName = 'guivo.db';
-  static const _dbVersion = 3;
+  static const _dbVersion = 4;
 
   Database? _db;
 
@@ -82,6 +82,11 @@ class DatabaseHelper {
         area TEXT
       )
     ''');
+    }
+    if (oldVersion < 4) {
+      await db.execute(
+        'ALTER TABLE quiz_sessions ADD COLUMN tipo TEXT NOT NULL DEFAULT "riasec"',
+      );
     }
   }
 }
