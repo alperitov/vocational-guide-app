@@ -71,7 +71,7 @@ class MainShell extends ConsumerWidget {
                   icon: Icons.quiz_outlined,
                   activeIcon: Icons.quiz_rounded,
                   label: 'Testes',
-                  isActive: currentIndex == 1,
+                  isActive: currentIndex == 2,
                   accent: accent,
                   inactive: inactive,
                   onTap: () => context.go('/tests'),
