@@ -45,20 +45,16 @@ GoRouter appRouter(Ref ref) {
     initialLocation: AppRoutes.splash,
     redirect: (context, state) {
       if (authState.isLoading) return null;
-
       final isLoggedIn = authState.valueOrNull != null;
       final isAuthRoute =
           state.matchedLocation == AppRoutes.login ||
           state.matchedLocation == AppRoutes.register ||
           state.matchedLocation == AppRoutes.splash;
-
       if (!isLoggedIn && !isAuthRoute) return AppRoutes.login;
       if (isLoggedIn && isAuthRoute) return AppRoutes.home;
-
       return null;
     },
     routes: [
-      // Rotas sem bottom nav
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => const SplashScreen(),
@@ -75,20 +71,6 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingScreen(),
       ),
-      GoRoute(
-        path: AppRoutes.profile,
-        builder: (context, state) => const ProfileScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.favorites,
-        builder: (context, state) => const FavoritesScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.history,
-        builder: (context, state) => const HistoryScreen(),
-      ),
-
-      // Rotas com bottom nav
       ShellRoute(
         builder: (context, state, child) => MainShell(child: child),
         routes: [
@@ -114,6 +96,10 @@ GoRouter appRouter(Ref ref) {
             ],
           ),
           GoRoute(
+            path: AppRoutes.tests,
+            builder: (context, state) => const TestsScreen(),
+          ),
+          GoRoute(
             path: AppRoutes.quiz,
             builder: (context, state) {
               final tipoStr = state.uri.queryParameters['tipo'];
@@ -128,8 +114,16 @@ GoRouter appRouter(Ref ref) {
             builder: (context, state) => const ResultsScreen(),
           ),
           GoRoute(
-            path: '/tests',
-            builder: (context, state) => const TestsScreen(),
+            path: AppRoutes.history,
+            builder: (context, state) => const HistoryScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.profile,
+            builder: (context, state) => const ProfileScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.favorites,
+            builder: (context, state) => const FavoritesScreen(),
           ),
         ],
       ),

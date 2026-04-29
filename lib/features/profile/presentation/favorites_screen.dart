@@ -5,6 +5,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/theme/light_theme.dart';
 import '../../../data/models/favorite.dart';
 import '../../../features/explore/application/favorites_providers.dart';
+import 'package:go_router/go_router.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   const FavoritesScreen({super.key});
@@ -58,7 +59,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen>
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => context.pop(),
                     ),
                     const Expanded(
                       child: Text(

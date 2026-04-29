@@ -7,7 +7,7 @@ part 'database_helper.g.dart';
 
 class DatabaseHelper {
   static const _dbName = 'guivo.db';
-  static const _dbVersion = 4;
+  static const _dbVersion = 5;
 
   Database? _db;
 
@@ -51,7 +51,21 @@ class DatabaseHelper {
       iniciado_em TEXT NOT NULL,
       completado_em TEXT,
       respostas TEXT NOT NULL DEFAULT '{}',
-      resultados TEXT NOT NULL DEFAULT '{}'
+      resultados TEXT NOT NULL DEFAULT '{}',
+      tipo TEXT NOT NULL DEFAULT 'riasec'
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE favorites (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      item_id TEXT NOT NULL,
+      tipo TEXT NOT NULL,
+      criado_em TEXT NOT NULL,
+      nome TEXT,
+      emoji TEXT,
+      area TEXT
     )
   ''');
   }
@@ -87,6 +101,20 @@ class DatabaseHelper {
       await db.execute(
         'ALTER TABLE quiz_sessions ADD COLUMN tipo TEXT NOT NULL DEFAULT "riasec"',
       );
+    }
+    if (oldVersion < 5) {
+      await db.execute('''
+      CREATE TABLE IF NOT EXISTS favorites (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        item_id TEXT NOT NULL,
+        tipo TEXT NOT NULL,
+        criado_em TEXT NOT NULL,
+        nome TEXT,
+        emoji TEXT,
+        area TEXT
+      )
+    ''');
     }
   }
 }

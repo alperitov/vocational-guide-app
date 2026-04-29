@@ -11,12 +11,13 @@ class MainShell extends ConsumerWidget {
   int _currentIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
     if (location.startsWith('/home')) return 0;
-    if (location.startsWith('/quiz')) return 2;
-    if (location.startsWith('/results')) return 3;
     if (location.startsWith('/explore')) return 1;
-    if (location.startsWith('/quiz')) return 2;
+    if (location.startsWith('/tests') || location.startsWith('/quiz')) return 2;
     if (location.startsWith('/results')) return 3;
-    if (location.startsWith('/tests')) return 1;
+    if (location.startsWith('/profile') ||
+        location.startsWith('/favorites') ||
+        location.startsWith('/history'))
+      return 4;
     return 0;
   }
 
@@ -83,6 +84,15 @@ class MainShell extends ConsumerWidget {
                   accent: accent,
                   inactive: inactive,
                   onTap: () => context.go('/results'),
+                ),
+                _NavItem(
+                  icon: Icons.person_outline_rounded,
+                  activeIcon: Icons.person_rounded,
+                  label: 'Perfil',
+                  isActive: currentIndex == 4,
+                  accent: accent,
+                  inactive: inactive,
+                  onTap: () => context.go('/profile'),
                 ),
               ],
             ),
