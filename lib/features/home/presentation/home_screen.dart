@@ -12,6 +12,7 @@ import '../../../features/onboarding/application/onboarding_providers.dart';
 import '../../../features/results/application/results_providers.dart';
 import '../../../features/results/presentation/widgets/results_constants.dart';
 import 'widgets/feed_card.dart';
+import '../../../core/theme/toggle_theme.dart';
 
 final _homePhotoProvider = FutureProvider.autoDispose<String?>((ref) async {
   final user = ref.watch(authRepositoryProvider).currentUser;
@@ -117,12 +118,23 @@ class HomeScreen extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      IconButton(
-                        icon: PhosphorIcon(
-                          PhosphorIcons.bell(),
-                          color: Colors.white,
-                        ),
-                        onPressed: () {},
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final themeMode =
+                              ref.watch(themeModeProvider).value ??
+                              ThemeMode.light;
+                          final isDark = themeMode == ThemeMode.dark;
+                          return IconButton(
+                            icon: Icon(
+                              isDark
+                                  ? Icons.light_mode_rounded
+                                  : Icons.dark_mode_rounded,
+                              color: Colors.white,
+                            ),
+                            onPressed: () =>
+                                ref.read(themeModeProvider.notifier).toggle(),
+                          );
+                        },
                       ),
                     ],
                   ),

@@ -146,7 +146,7 @@ class _CoursesTabSectionState extends State<CoursesTabSection> {
                     Wrap(
                       spacing: 6,
                       runSpacing: 6,
-                      children: curso.instituicoes
+                      children: curso.instituicoesIds
                           .map(
                             (inst) => Container(
                               padding: const EdgeInsets.symmetric(

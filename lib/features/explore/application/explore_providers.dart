@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/local/courses_data.dart';
-import '../../../data/local/professions_data.dart';
+import '../../../data/local/professions/data/professions_data.dart';
+import '../../../data/local/professions/professions_data.dart';
 import '../../../data/models/course.dart';
 import '../../../data/models/profession.dart';
 
@@ -48,7 +49,9 @@ class ExploreFilterNotifier extends _$ExploreFilterNotifier {
 @riverpod
 List<Profession> filteredProfessions(Ref ref) {
   final filter = ref.watch(exploreFilterNotifierProvider);
-  return kProfissoes.where((p) {
+
+  // Agora utiliza kTodasProfissoes vindo do ficheiro modularizado
+  return kTodasProfissoes.where((p) {
     final matchQuery =
         filter.query.isEmpty ||
         p.nome.toLowerCase().contains(filter.query.toLowerCase()) ||
@@ -72,8 +75,7 @@ List<Course> filteredCourses(Ref ref) {
 }
 
 @riverpod
-List<String> professionAreas(Ref ref) =>
-    kProfissoes.map((p) => p.areaConhecimento).toSet().toList()..sort();
+List<String> professionAreas(Ref ref) => kAreasConhecimento; // Otimizado: usa a lista estática definida no repositório
 
 @riverpod
 List<String> courseAreas(Ref ref) =>

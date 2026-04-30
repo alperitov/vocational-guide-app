@@ -147,47 +147,6 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const Divider(height: 40),
 
-            // Tema
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              leading: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
-              title: const Text('Tema'),
-              subtitle: Text(isDark ? 'Escuro' : 'Claro'),
-              trailing: Switch(
-                value: isDark,
-                onChanged: (_) => ref.read(themeModeProvider.notifier).toggle(),
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Adiciona antes do Divider do logout no ProfileScreen
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              leading: Icon(
-                Icons.history_rounded,
-                color: theme.colorScheme.primary,
-              ),
-              title: const Text('Histórico de testes'),
-              trailing: const Icon(Icons.chevron_right_rounded),
-              onTap: () => context.go(AppRoutes.history),
-            ),
-            const SizedBox(height: 8),
-
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              leading: Icon(Icons.favorite_rounded, color: Colors.red.shade400),
-              title: const Text('Os meus favoritos'),
-              trailing: const Icon(Icons.chevron_right_rounded),
-              onTap: () => context.go(AppRoutes.favorites),
-            ),
-            const SizedBox(height: 8),
-
             // Logout
             ListTile(
               shape: RoundedRectangleBorder(

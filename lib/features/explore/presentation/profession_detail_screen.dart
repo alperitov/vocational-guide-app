@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../data/local/courses_data.dart';
-import '../../../data/local/professions_data.dart';
+import '../../../data/local/institutions_data.dart';
+import '../../../data/local/professions/data/professions_data.dart';
 import '../../../data/models/favorite.dart';
+import '../../../data/models/institution.dart';
 import '../../../data/models/profession.dart';
 import '../../../core/theme/light_theme.dart';
 import '../application/favorites_providers.dart';
@@ -30,7 +32,7 @@ class ProfessionDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profession = kProfissoes
+    final profession = kTodasProfissoes
         .where((p) => p.id == professionId)
         .firstOrNull;
 
@@ -44,15 +46,16 @@ class ProfessionDetailScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final isFavAsync = ref.watch(isFavoriteProvider(profession.id));
     final isFav = isFavAsync.valueOrNull ?? false;
+
     final cursosRelacionados = kCursos
         .where((c) => profession.cursosRelacionados.contains(c.id))
         .toList();
+
     final mercadoCor = _mercadoColor(profession.mercadoTrabalho);
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // Cabeçalho
           SliverToBoxAdapter(
             child: Container(
               decoration: const BoxDecoration(
@@ -70,7 +73,6 @@ class ProfessionDetailScreen extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  // AppBar row
                   Row(
                     children: [
                       IconButton(
@@ -95,22 +97,9 @@ class ProfessionDetailScreen extends ConsumerWidget {
                               area: profession.areaConhecimento,
                             ),
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.share_rounded,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => SharePlus.instance.share(
-                          ShareParams(
-                            text:
-                                '${profession.emoji} ${profession.nome}\n\n${profession.descricao}\n\nDescobre mais na app Guivo!',
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  // Emoji e nome
                   Text(profession.emoji, style: const TextStyle(fontSize: 56)),
                   const SizedBox(height: 12),
                   Text(
@@ -136,7 +125,6 @@ class ProfessionDetailScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(20),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                // Mercado e Salário
                 Row(
                   children: [
                     Expanded(
@@ -161,7 +149,6 @@ class ProfessionDetailScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Descrição
                 _Section(
                   title: 'Sobre a profissão',
                   child: Text(
@@ -174,84 +161,29 @@ class ProfessionDetailScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Mercado em Moçambique
-                if (profession.detalhesMercado != null)
-                  _Section(
-                    title: '📍 Mercado em Moçambique',
-                    child: Container(
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: mercadoCor.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: mercadoCor.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      child: Text(
-                        profession.detalhesMercado!,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          height: 1.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 20),
-
-                // Perfil ideal
-                _Section(
-                  title: '🎯 Perfil ideal',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (profession.dimRiasec.isNotEmpty) ...[
-                        Text(
-                          'RIASEC',
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: profession.dimRiasec.map((d) {
-                            final cor =
-                                dimensaoCores[d] ?? theme.colorScheme.primary;
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: cor.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: cor.withValues(alpha: 0.3),
-                                ),
-                              ),
-                              child: Text(
-                                '${dimensaoEmojis[d] ?? ''} ${dimensaoNomes[d] ?? d}',
-                                style: TextStyle(
-                                  color: cor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Cursos relacionados
                 if (cursosRelacionados.isNotEmpty)
                   _Section(
                     title: '🎓 Cursos que levam a esta profissão',
                     child: Column(
                       children: cursosRelacionados.map((curso) {
+                        // Mapeia os IDs para Acrónimos
+                        final siglas = curso.instituicoesIds
+                            .map((id) {
+                              return kInstituicoes
+                                  .firstWhere(
+                                    (inst) => inst.id == id,
+                                    orElse: () => Institution(
+                                      id: id,
+                                      acronym: id.split('_').last.toUpperCase(),
+                                      name: '',
+                                      type: InstitutionType.publica,
+                                      province: Province.maputoCidade,
+                                    ),
+                                  )
+                                  .acronym;
+                            })
+                            .join(', ');
+
                         return Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.all(14),
@@ -274,7 +206,7 @@ class ProfessionDetailScreen extends ConsumerWidget {
                                       ),
                                     ),
                                     Text(
-                                      curso.instituicoes.join(', '),
+                                      siglas, // <--- Mostra siglas reais
                                       style: TextStyle(
                                         fontSize: 12,
                                         color:
@@ -292,73 +224,31 @@ class ProfessionDetailScreen extends ConsumerWidget {
                   ),
                 const SizedBox(height: 20),
 
-                // Instituições
                 _Section(
-                  title: '🏛️ Onde estudar em Moçambique',
+                  title: '🏛️ Onde estudar',
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: profession.instituicoes
-                        .map(
-                          (inst) => Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              inst,
-                              style: TextStyle(
-                                color: theme.colorScheme.onPrimaryContainer,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Botão favorito
-                SizedBox(
-                  height: 52,
-                  child: FilledButton.icon(
-                    onPressed: () => ref
-                        .read(favoritesNotifierProvider.notifier)
-                        .toggle(
-                          itemId: profession.id,
-                          tipo: FavoriteType.profissao,
-                          nome: profession.nome,
-                          emoji: profession.emoji,
-                          area: profession.areaConhecimento,
+                    children: profession.instituicoes.map((inst) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
                         ),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: isFav
-                          ? Colors.red
-                          : theme.colorScheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    icon: Icon(
-                      isFav
-                          ? Icons.favorite_rounded
-                          : Icons.favorite_border_rounded,
-                    ),
-                    label: Text(
-                      isFav
-                          ? 'Remover dos favoritos'
-                          : 'Adicionar aos favoritos',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          inst,
+                          style: TextStyle(
+                            color: theme.colorScheme.onPrimaryContainer,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -371,7 +261,6 @@ class ProfessionDetailScreen extends ConsumerWidget {
   }
 }
 
-// Widgets auxiliares
 class _InfoCard extends StatelessWidget {
   const _InfoCard({
     required this.icon,
@@ -387,7 +276,6 @@ class _InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(

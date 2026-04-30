@@ -77,10 +77,13 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                         ),
                       ),
                     ),
-                    PhosphorIcon(
-                      PhosphorIcons.compass(),
-                      color: Colors.white70,
-                      size: 28,
+                    IconButton(
+                      onPressed: () => context.go(AppRoutes.favorites),
+                      icon: Icon(
+                        PhosphorIcons.heart(),
+                        size: 32.0,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),

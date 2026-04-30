@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Course {
 
- String get id; String get nome; String get area; List<String> get dimensoesRiasec; List<String> get instituicoes; String get descricao; List<String> get dimGardner; List<String> get dimValores; List<String> get profissoesRelacionadas; String? get duracao; String? get requisitosMinimos;
+ String get id; String get nome; String get area; List<String> get dimensoesRiasec; List<String> get instituicoesIds; String get descricao; List<String> get dimGardner; List<String> get dimValores; List<String> get profissoesRelacionadas; String? get duracao; String? get requisitosMinimos;
 /// Create a copy of Course
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CourseCopyWith<Course> get copyWith => _$CourseCopyWithImpl<Course>(this as Cou
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Course&&(identical(other.id, id) || other.id == id)&&(identical(other.nome, nome) || other.nome == nome)&&(identical(other.area, area) || other.area == area)&&const DeepCollectionEquality().equals(other.dimensoesRiasec, dimensoesRiasec)&&const DeepCollectionEquality().equals(other.instituicoes, instituicoes)&&(identical(other.descricao, descricao) || other.descricao == descricao)&&const DeepCollectionEquality().equals(other.dimGardner, dimGardner)&&const DeepCollectionEquality().equals(other.dimValores, dimValores)&&const DeepCollectionEquality().equals(other.profissoesRelacionadas, profissoesRelacionadas)&&(identical(other.duracao, duracao) || other.duracao == duracao)&&(identical(other.requisitosMinimos, requisitosMinimos) || other.requisitosMinimos == requisitosMinimos));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Course&&(identical(other.id, id) || other.id == id)&&(identical(other.nome, nome) || other.nome == nome)&&(identical(other.area, area) || other.area == area)&&const DeepCollectionEquality().equals(other.dimensoesRiasec, dimensoesRiasec)&&const DeepCollectionEquality().equals(other.instituicoesIds, instituicoesIds)&&(identical(other.descricao, descricao) || other.descricao == descricao)&&const DeepCollectionEquality().equals(other.dimGardner, dimGardner)&&const DeepCollectionEquality().equals(other.dimValores, dimValores)&&const DeepCollectionEquality().equals(other.profissoesRelacionadas, profissoesRelacionadas)&&(identical(other.duracao, duracao) || other.duracao == duracao)&&(identical(other.requisitosMinimos, requisitosMinimos) || other.requisitosMinimos == requisitosMinimos));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nome,area,const DeepCollectionEquality().hash(dimensoesRiasec),const DeepCollectionEquality().hash(instituicoes),descricao,const DeepCollectionEquality().hash(dimGardner),const DeepCollectionEquality().hash(dimValores),const DeepCollectionEquality().hash(profissoesRelacionadas),duracao,requisitosMinimos);
+int get hashCode => Object.hash(runtimeType,id,nome,area,const DeepCollectionEquality().hash(dimensoesRiasec),const DeepCollectionEquality().hash(instituicoesIds),descricao,const DeepCollectionEquality().hash(dimGardner),const DeepCollectionEquality().hash(dimValores),const DeepCollectionEquality().hash(profissoesRelacionadas),duracao,requisitosMinimos);
 
 @override
 String toString() {
-  return 'Course(id: $id, nome: $nome, area: $area, dimensoesRiasec: $dimensoesRiasec, instituicoes: $instituicoes, descricao: $descricao, dimGardner: $dimGardner, dimValores: $dimValores, profissoesRelacionadas: $profissoesRelacionadas, duracao: $duracao, requisitosMinimos: $requisitosMinimos)';
+  return 'Course(id: $id, nome: $nome, area: $area, dimensoesRiasec: $dimensoesRiasec, instituicoesIds: $instituicoesIds, descricao: $descricao, dimGardner: $dimGardner, dimValores: $dimValores, profissoesRelacionadas: $profissoesRelacionadas, duracao: $duracao, requisitosMinimos: $requisitosMinimos)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CourseCopyWith<$Res>  {
   factory $CourseCopyWith(Course value, $Res Function(Course) _then) = _$CourseCopyWithImpl;
 @useResult
 $Res call({
- String id, String nome, String area, List<String> dimensoesRiasec, List<String> instituicoes, String descricao, List<String> dimGardner, List<String> dimValores, List<String> profissoesRelacionadas, String? duracao, String? requisitosMinimos
+ String id, String nome, String area, List<String> dimensoesRiasec, List<String> instituicoesIds, String descricao, List<String> dimGardner, List<String> dimValores, List<String> profissoesRelacionadas, String? duracao, String? requisitosMinimos
 });
 
 
@@ -65,13 +65,13 @@ class _$CourseCopyWithImpl<$Res>
 
 /// Create a copy of Course
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nome = null,Object? area = null,Object? dimensoesRiasec = null,Object? instituicoes = null,Object? descricao = null,Object? dimGardner = null,Object? dimValores = null,Object? profissoesRelacionadas = null,Object? duracao = freezed,Object? requisitosMinimos = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nome = null,Object? area = null,Object? dimensoesRiasec = null,Object? instituicoesIds = null,Object? descricao = null,Object? dimGardner = null,Object? dimValores = null,Object? profissoesRelacionadas = null,Object? duracao = freezed,Object? requisitosMinimos = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nome: null == nome ? _self.nome : nome // ignore: cast_nullable_to_non_nullable
 as String,area: null == area ? _self.area : area // ignore: cast_nullable_to_non_nullable
 as String,dimensoesRiasec: null == dimensoesRiasec ? _self.dimensoesRiasec : dimensoesRiasec // ignore: cast_nullable_to_non_nullable
-as List<String>,instituicoes: null == instituicoes ? _self.instituicoes : instituicoes // ignore: cast_nullable_to_non_nullable
+as List<String>,instituicoesIds: null == instituicoesIds ? _self.instituicoesIds : instituicoesIds // ignore: cast_nullable_to_non_nullable
 as List<String>,descricao: null == descricao ? _self.descricao : descricao // ignore: cast_nullable_to_non_nullable
 as String,dimGardner: null == dimGardner ? _self.dimGardner : dimGardner // ignore: cast_nullable_to_non_nullable
 as List<String>,dimValores: null == dimValores ? _self.dimValores : dimValores // ignore: cast_nullable_to_non_nullable
@@ -160,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nome,  String area,  List<String> dimensoesRiasec,  List<String> instituicoes,  String descricao,  List<String> dimGardner,  List<String> dimValores,  List<String> profissoesRelacionadas,  String? duracao,  String? requisitosMinimos)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nome,  String area,  List<String> dimensoesRiasec,  List<String> instituicoesIds,  String descricao,  List<String> dimGardner,  List<String> dimValores,  List<String> profissoesRelacionadas,  String? duracao,  String? requisitosMinimos)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Course() when $default != null:
-return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.instituicoes,_that.descricao,_that.dimGardner,_that.dimValores,_that.profissoesRelacionadas,_that.duracao,_that.requisitosMinimos);case _:
+return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.instituicoesIds,_that.descricao,_that.dimGardner,_that.dimValores,_that.profissoesRelacionadas,_that.duracao,_that.requisitosMinimos);case _:
   return orElse();
 
 }
@@ -181,10 +181,10 @@ return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.insti
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nome,  String area,  List<String> dimensoesRiasec,  List<String> instituicoes,  String descricao,  List<String> dimGardner,  List<String> dimValores,  List<String> profissoesRelacionadas,  String? duracao,  String? requisitosMinimos)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nome,  String area,  List<String> dimensoesRiasec,  List<String> instituicoesIds,  String descricao,  List<String> dimGardner,  List<String> dimValores,  List<String> profissoesRelacionadas,  String? duracao,  String? requisitosMinimos)  $default,) {final _that = this;
 switch (_that) {
 case _Course():
-return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.instituicoes,_that.descricao,_that.dimGardner,_that.dimValores,_that.profissoesRelacionadas,_that.duracao,_that.requisitosMinimos);}
+return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.instituicoesIds,_that.descricao,_that.dimGardner,_that.dimValores,_that.profissoesRelacionadas,_that.duracao,_that.requisitosMinimos);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -198,10 +198,10 @@ return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.insti
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nome,  String area,  List<String> dimensoesRiasec,  List<String> instituicoes,  String descricao,  List<String> dimGardner,  List<String> dimValores,  List<String> profissoesRelacionadas,  String? duracao,  String? requisitosMinimos)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nome,  String area,  List<String> dimensoesRiasec,  List<String> instituicoesIds,  String descricao,  List<String> dimGardner,  List<String> dimValores,  List<String> profissoesRelacionadas,  String? duracao,  String? requisitosMinimos)?  $default,) {final _that = this;
 switch (_that) {
 case _Course() when $default != null:
-return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.instituicoes,_that.descricao,_that.dimGardner,_that.dimValores,_that.profissoesRelacionadas,_that.duracao,_that.requisitosMinimos);case _:
+return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.instituicoesIds,_that.descricao,_that.dimGardner,_that.dimValores,_that.profissoesRelacionadas,_that.duracao,_that.requisitosMinimos);case _:
   return null;
 
 }
@@ -213,7 +213,7 @@ return $default(_that.id,_that.nome,_that.area,_that.dimensoesRiasec,_that.insti
 @JsonSerializable()
 
 class _Course implements Course {
-  const _Course({required this.id, required this.nome, required this.area, required final  List<String> dimensoesRiasec, required final  List<String> instituicoes, required this.descricao, final  List<String> dimGardner = const [], final  List<String> dimValores = const [], final  List<String> profissoesRelacionadas = const [], this.duracao, this.requisitosMinimos}): _dimensoesRiasec = dimensoesRiasec,_instituicoes = instituicoes,_dimGardner = dimGardner,_dimValores = dimValores,_profissoesRelacionadas = profissoesRelacionadas;
+  const _Course({required this.id, required this.nome, required this.area, required final  List<String> dimensoesRiasec, required final  List<String> instituicoesIds, required this.descricao, final  List<String> dimGardner = const [], final  List<String> dimValores = const [], final  List<String> profissoesRelacionadas = const [], this.duracao, this.requisitosMinimos}): _dimensoesRiasec = dimensoesRiasec,_instituicoesIds = instituicoesIds,_dimGardner = dimGardner,_dimValores = dimValores,_profissoesRelacionadas = profissoesRelacionadas;
   factory _Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
 
 @override final  String id;
@@ -226,11 +226,11 @@ class _Course implements Course {
   return EqualUnmodifiableListView(_dimensoesRiasec);
 }
 
- final  List<String> _instituicoes;
-@override List<String> get instituicoes {
-  if (_instituicoes is EqualUnmodifiableListView) return _instituicoes;
+ final  List<String> _instituicoesIds;
+@override List<String> get instituicoesIds {
+  if (_instituicoesIds is EqualUnmodifiableListView) return _instituicoesIds;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_instituicoes);
+  return EqualUnmodifiableListView(_instituicoesIds);
 }
 
 @override final  String descricao;
@@ -271,16 +271,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Course&&(identical(other.id, id) || other.id == id)&&(identical(other.nome, nome) || other.nome == nome)&&(identical(other.area, area) || other.area == area)&&const DeepCollectionEquality().equals(other._dimensoesRiasec, _dimensoesRiasec)&&const DeepCollectionEquality().equals(other._instituicoes, _instituicoes)&&(identical(other.descricao, descricao) || other.descricao == descricao)&&const DeepCollectionEquality().equals(other._dimGardner, _dimGardner)&&const DeepCollectionEquality().equals(other._dimValores, _dimValores)&&const DeepCollectionEquality().equals(other._profissoesRelacionadas, _profissoesRelacionadas)&&(identical(other.duracao, duracao) || other.duracao == duracao)&&(identical(other.requisitosMinimos, requisitosMinimos) || other.requisitosMinimos == requisitosMinimos));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Course&&(identical(other.id, id) || other.id == id)&&(identical(other.nome, nome) || other.nome == nome)&&(identical(other.area, area) || other.area == area)&&const DeepCollectionEquality().equals(other._dimensoesRiasec, _dimensoesRiasec)&&const DeepCollectionEquality().equals(other._instituicoesIds, _instituicoesIds)&&(identical(other.descricao, descricao) || other.descricao == descricao)&&const DeepCollectionEquality().equals(other._dimGardner, _dimGardner)&&const DeepCollectionEquality().equals(other._dimValores, _dimValores)&&const DeepCollectionEquality().equals(other._profissoesRelacionadas, _profissoesRelacionadas)&&(identical(other.duracao, duracao) || other.duracao == duracao)&&(identical(other.requisitosMinimos, requisitosMinimos) || other.requisitosMinimos == requisitosMinimos));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nome,area,const DeepCollectionEquality().hash(_dimensoesRiasec),const DeepCollectionEquality().hash(_instituicoes),descricao,const DeepCollectionEquality().hash(_dimGardner),const DeepCollectionEquality().hash(_dimValores),const DeepCollectionEquality().hash(_profissoesRelacionadas),duracao,requisitosMinimos);
+int get hashCode => Object.hash(runtimeType,id,nome,area,const DeepCollectionEquality().hash(_dimensoesRiasec),const DeepCollectionEquality().hash(_instituicoesIds),descricao,const DeepCollectionEquality().hash(_dimGardner),const DeepCollectionEquality().hash(_dimValores),const DeepCollectionEquality().hash(_profissoesRelacionadas),duracao,requisitosMinimos);
 
 @override
 String toString() {
-  return 'Course(id: $id, nome: $nome, area: $area, dimensoesRiasec: $dimensoesRiasec, instituicoes: $instituicoes, descricao: $descricao, dimGardner: $dimGardner, dimValores: $dimValores, profissoesRelacionadas: $profissoesRelacionadas, duracao: $duracao, requisitosMinimos: $requisitosMinimos)';
+  return 'Course(id: $id, nome: $nome, area: $area, dimensoesRiasec: $dimensoesRiasec, instituicoesIds: $instituicoesIds, descricao: $descricao, dimGardner: $dimGardner, dimValores: $dimValores, profissoesRelacionadas: $profissoesRelacionadas, duracao: $duracao, requisitosMinimos: $requisitosMinimos)';
 }
 
 
@@ -291,7 +291,7 @@ abstract mixin class _$CourseCopyWith<$Res> implements $CourseCopyWith<$Res> {
   factory _$CourseCopyWith(_Course value, $Res Function(_Course) _then) = __$CourseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String nome, String area, List<String> dimensoesRiasec, List<String> instituicoes, String descricao, List<String> dimGardner, List<String> dimValores, List<String> profissoesRelacionadas, String? duracao, String? requisitosMinimos
+ String id, String nome, String area, List<String> dimensoesRiasec, List<String> instituicoesIds, String descricao, List<String> dimGardner, List<String> dimValores, List<String> profissoesRelacionadas, String? duracao, String? requisitosMinimos
 });
 
 
@@ -308,13 +308,13 @@ class __$CourseCopyWithImpl<$Res>
 
 /// Create a copy of Course
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nome = null,Object? area = null,Object? dimensoesRiasec = null,Object? instituicoes = null,Object? descricao = null,Object? dimGardner = null,Object? dimValores = null,Object? profissoesRelacionadas = null,Object? duracao = freezed,Object? requisitosMinimos = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nome = null,Object? area = null,Object? dimensoesRiasec = null,Object? instituicoesIds = null,Object? descricao = null,Object? dimGardner = null,Object? dimValores = null,Object? profissoesRelacionadas = null,Object? duracao = freezed,Object? requisitosMinimos = freezed,}) {
   return _then(_Course(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nome: null == nome ? _self.nome : nome // ignore: cast_nullable_to_non_nullable
 as String,area: null == area ? _self.area : area // ignore: cast_nullable_to_non_nullable
 as String,dimensoesRiasec: null == dimensoesRiasec ? _self._dimensoesRiasec : dimensoesRiasec // ignore: cast_nullable_to_non_nullable
-as List<String>,instituicoes: null == instituicoes ? _self._instituicoes : instituicoes // ignore: cast_nullable_to_non_nullable
+as List<String>,instituicoesIds: null == instituicoesIds ? _self._instituicoesIds : instituicoesIds // ignore: cast_nullable_to_non_nullable
 as List<String>,descricao: null == descricao ? _self.descricao : descricao // ignore: cast_nullable_to_non_nullable
 as String,dimGardner: null == dimGardner ? _self._dimGardner : dimGardner // ignore: cast_nullable_to_non_nullable
 as List<String>,dimValores: null == dimValores ? _self._dimValores : dimValores // ignore: cast_nullable_to_non_nullable

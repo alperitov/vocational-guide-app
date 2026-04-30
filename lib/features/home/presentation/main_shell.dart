@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'widgets/nav_item.dart';
 import 'package:go_router/go_router.dart';
-import '../../../features/auth/data/auth_repository.dart';
 
 class MainShell extends ConsumerWidget {
   const MainShell({super.key, required this.child});
@@ -11,13 +11,17 @@ class MainShell extends ConsumerWidget {
   int _currentIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
     if (location.startsWith('/home')) return 0;
-    if (location.startsWith('/explore')) return 1;
-    if (location.startsWith('/tests') || location.startsWith('/quiz')) return 2;
+    if (location.startsWith('/explore') || location.startsWith('/favorites')) {
+      return 1;
+    }
+    if (location.startsWith('/tests') ||
+        location.startsWith('/history') ||
+        location.startsWith('/quiz')) {
+      return 2;
+    }
     if (location.startsWith('/results')) return 3;
-    if (location.startsWith('/profile') ||
-        location.startsWith('/favorites') ||
-        location.startsWith('/history'))
-      return 4;
+    if (location.startsWith('/profile')) return 4;
+
     return 0;
   }
 
@@ -49,7 +53,7 @@ class MainShell extends ConsumerWidget {
             height: 64,
             child: Row(
               children: [
-                _NavItem(
+                NavItem(
                   icon: Icons.home_outlined,
                   activeIcon: Icons.home_rounded,
                   label: 'Início',
@@ -58,7 +62,7 @@ class MainShell extends ConsumerWidget {
                   inactive: inactive,
                   onTap: () => context.go('/home'),
                 ),
-                _NavItem(
+                NavItem(
                   icon: Icons.explore_outlined,
                   activeIcon: Icons.explore_rounded,
                   label: 'Explorar',
@@ -67,7 +71,7 @@ class MainShell extends ConsumerWidget {
                   inactive: inactive,
                   onTap: () => context.go('/explore'),
                 ),
-                _NavItem(
+                NavItem(
                   icon: Icons.quiz_outlined,
                   activeIcon: Icons.quiz_rounded,
                   label: 'Testes',
@@ -76,7 +80,7 @@ class MainShell extends ConsumerWidget {
                   inactive: inactive,
                   onTap: () => context.go('/tests'),
                 ),
-                _NavItem(
+                NavItem(
                   icon: Icons.bar_chart_outlined,
                   activeIcon: Icons.bar_chart_rounded,
                   label: 'Resultados',
@@ -85,7 +89,7 @@ class MainShell extends ConsumerWidget {
                   inactive: inactive,
                   onTap: () => context.go('/results'),
                 ),
-                _NavItem(
+                NavItem(
                   icon: Icons.person_outline_rounded,
                   activeIcon: Icons.person_rounded,
                   label: 'Perfil',
@@ -97,66 +101,6 @@ class MainShell extends ConsumerWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _NavItem extends StatelessWidget {
-  const _NavItem({
-    required this.icon,
-    required this.activeIcon,
-    required this.label,
-    required this.isActive,
-    required this.accent,
-    required this.inactive,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final IconData activeIcon;
-  final String label;
-  final bool isActive;
-  final Color accent;
-  final Color inactive;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        behavior: HitTestBehavior.opaque,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 3,
-              width: isActive ? 24 : 0,
-              margin: const EdgeInsets.only(bottom: 6),
-              decoration: BoxDecoration(
-                color: accent,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            Icon(
-              isActive ? activeIcon : icon,
-              color: isActive ? accent : inactive,
-              size: 22,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: isActive ? accent : inactive,
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-              ),
-            ),
-          ],
         ),
       ),
     );

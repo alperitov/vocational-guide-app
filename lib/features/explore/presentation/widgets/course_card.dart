@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../data/models/course.dart';
 import '../../../../data/models/favorite.dart';
+import '../../../../data/models/institution.dart'; // Adicionado
+import '../../../../data/local/institutions_data.dart'; // Adicionado
 import '../../application/favorites_providers.dart';
 
 class CourseCard extends ConsumerWidget {
@@ -44,36 +46,27 @@ class CourseCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.secondaryContainer,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: const Center(
-                      child: Text('🎓', style: TextStyle(fontSize: 26)),
-                    ),
-                  ),
-                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          course.nome,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 15,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
                           course.area,
                           style: TextStyle(
-                            color: theme.colorScheme.onSurfaceVariant,
+                            color: theme.colorScheme.primary,
                             fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          course.nome,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
                       ],
@@ -84,9 +77,7 @@ class CourseCard extends ConsumerWidget {
                       isFav
                           ? Icons.favorite_rounded
                           : Icons.favorite_border_rounded,
-                      color: isFav
-                          ? Colors.red
-                          : theme.colorScheme.onSurfaceVariant,
+                      color: isFav ? Colors.red : theme.colorScheme.outline,
                     ),
                     onPressed: () => ref
                         .read(favoritesNotifierProvider.notifier)
@@ -103,41 +94,35 @@ class CourseCard extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(
                 course.descricao,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Row(
                 children: [
-                  if (course.duracao != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        course.duracao!,
-                        style: TextStyle(
-                          color: theme.colorScheme.onPrimaryContainer,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  if (course.duracao != null) const SizedBox(width: 8),
+                  // Lógica de mapeamento de IDs para Siglas (Acrónimos)
                   Wrap(
-                    spacing: 4,
-                    children: course.instituicoes
+                    spacing: 6,
+                    children: course
+                        .instituicoesIds // Usando a lista de IDs
                         .take(2)
-                        .map(
-                          (inst) => Container(
+                        .map((id) {
+                          final inst = kInstituicoes.firstWhere(
+                            (i) => i.id == id,
+                            orElse: () => Institution(
+                              id: id,
+                              acronym: id.toUpperCase().replaceAll('INST_', ''),
+                              name: '?',
+                              type: InstitutionType.publica,
+                              province: Province.maputoCidade,
+                            ),
+                          );
+                          return Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8,
                               vertical: 3,
@@ -147,16 +132,28 @@ class CourseCard extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              inst,
+                              inst.acronym,
                               style: TextStyle(
                                 fontSize: 10,
                                 color: theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                        )
+                          );
+                        })
                         .toList(),
                   ),
+                  if (course.instituicoesIds.length > 2)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Text(
+                        '+${course.instituicoesIds.length - 2}',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: theme.colorScheme.outline,
+                        ),
+                      ),
+                    ),
                   const Spacer(),
                   IconButton(
                     icon: Icon(

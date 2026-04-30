@@ -10,7 +10,7 @@ sealed class Course with _$Course {
     required String nome,
     required String area,
     required List<String> dimensoesRiasec,
-    required List<String> instituicoes,
+    required List<String> instituicoesIds,
     required String descricao,
     @Default([]) List<String> dimGardner,
     @Default([]) List<String> dimValores,

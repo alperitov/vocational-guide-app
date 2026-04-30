@@ -107,7 +107,13 @@ class HistoryScreen extends ConsumerWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => context.pop(),
+                      onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go(AppRoutes.tests);
+                        }
+                      },
                     ),
                     const Expanded(
                       child: Text(

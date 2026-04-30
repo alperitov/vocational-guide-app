@@ -1,4 +1,4 @@
-import '../models/profession.dart';
+import '../../models/profession.dart';
 
 const List<Profession> kProfissoes = [
   // ==================== SAÚDE (10 profissões) ====================

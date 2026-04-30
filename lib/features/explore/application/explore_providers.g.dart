@@ -7,7 +7,7 @@ part of 'explore_providers.dart';
 // **************************************************************************
 
 String _$filteredProfessionsHash() =>
-    r'55c6c80b4e2ba9f69e828ad50fa986a9cae65fe5';
+    r'7e7d83b50abc8403a5328100c7dcb45a0a175043';
 
 /// See also [filteredProfessions].
 @ProviderFor(filteredProfessions)
@@ -42,7 +42,7 @@ final filteredCoursesProvider = AutoDisposeProvider<List<Course>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FilteredCoursesRef = AutoDisposeProviderRef<List<Course>>;
-String _$professionAreasHash() => r'e3bb62c2e1b54f2506b08f035d708d388f8bf27f';
+String _$professionAreasHash() => r'692d82e37bb6ed2d90ddccd8bd330a387fd086ae';
 
 /// See also [professionAreas].
 @ProviderFor(professionAreas)

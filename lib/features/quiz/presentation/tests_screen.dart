@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/light_theme.dart';
@@ -71,10 +70,13 @@ class TestsScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    PhosphorIcon(
-                      PhosphorIcons.brain(),
-                      color: Colors.white54,
-                      size: 32,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.history_rounded,
+                        color: Colors.white,
+                      ),
+                      tooltip: 'Histórico',
+                      onPressed: () => context.go(AppRoutes.history),
                     ),
                   ],
                 ),

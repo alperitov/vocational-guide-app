@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import '../../../core/router/app_router.dart';
 import '../../../core/theme/light_theme.dart';
 import '../../../data/models/favorite.dart';
 import '../../../features/explore/application/favorites_providers.dart';
@@ -59,7 +60,13 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen>
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => context.pop(),
+                      onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go(AppRoutes.explore);
+                        }
+                      },
                     ),
                     const Expanded(
                       child: Text(
@@ -71,7 +78,10 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen>
                         ),
                       ),
                     ),
-                    PhosphorIcon(PhosphorIcons.heart(), color: Colors.white70),
+                    PhosphorIcon(
+                      PhosphorIconsFill.heart,
+                      color: Colors.white70,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),

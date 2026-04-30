@@ -13,7 +13,7 @@ _Course _$CourseFromJson(Map<String, dynamic> json) => _Course(
   dimensoesRiasec: (json['dimensoesRiasec'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
-  instituicoes: (json['instituicoes'] as List<dynamic>)
+  instituicoesIds: (json['instituicoesIds'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
   descricao: json['descricao'] as String,
@@ -41,7 +41,7 @@ Map<String, dynamic> _$CourseToJson(_Course instance) => <String, dynamic>{
   'nome': instance.nome,
   'area': instance.area,
   'dimensoesRiasec': instance.dimensoesRiasec,
-  'instituicoes': instance.instituicoes,
+  'instituicoesIds': instance.instituicoesIds,
   'descricao': instance.descricao,
   'dimGardner': instance.dimGardner,
   'dimValores': instance.dimValores,

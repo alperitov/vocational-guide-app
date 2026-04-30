@@ -113,7 +113,14 @@ final lightTheme = ThemeData(
   chipTheme: ChipThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     selectedColor: _primary,
-    labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+    labelStyle: const TextStyle(
+      fontWeight: FontWeight.w500,
+      color: Colors.black87, // ← força cor escura
+    ),
+    secondaryLabelStyle: const TextStyle(
+      color: Colors.white, // ← quando seleccionado
+      fontWeight: FontWeight.w600,
+    ),
   ),
 
   // Bottom Navigation
