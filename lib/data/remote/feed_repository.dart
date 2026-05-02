@@ -10,37 +10,126 @@ class FeedRepository {
   final FirebaseFirestore _firestore;
 
   List<FeedPost> _feedFallback() => [
+    // USTM — Destaque principal
     FeedPost(
-      id: 'f1',
-      instituicao: 'Universidade Eduardo Mondlane',
-      titulo: 'Inscrições abertas 2025',
+      id: 'f_ustm_1',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Candidaturas 2026 Abertas — USTM',
       descricao:
-          'A UEM abre inscrições para o ano lectivo 2025. Candidaturas para todas as faculdades de 15 de Janeiro a 28 de Fevereiro.',
+          'A USTM abre candidaturas para o ano lectivo 2026 em todos os cursos de Licenciatura, incluindo Gestão de Empresas, Direito, Informática, Ciências de Saúde e Arquitectura. Inscrições presenciais e online até 28 de Fevereiro.',
       tipo: PostTipo.edital,
-      dataPublicacao: DateTime.now(),
+      dataPublicacao: DateTime(2026, 1, 10),
+      dataExpiracao: DateTime(2026, 2, 28),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '🏛️',
+    ),
+    FeedPost(
+      id: 'f_ustm_2',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Bolsas de Mérito USTM 2026',
+      descricao:
+          'A USTM disponibiliza bolsas de estudo parciais (50% de desconto) para estudantes com média igual ou superior a 16 valores no ensino secundário. Candidaturas abertas até 15 de Março de 2026.',
+      tipo: PostTipo.bolsa,
+      dataPublicacao: DateTime(2026, 1, 20),
+      dataExpiracao: DateTime(2026, 3, 15),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '🎓',
+    ),
+    FeedPost(
+      id: 'f_ustm_3',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Orientação Vocacional com a App Guivo',
+      descricao:
+          'A USTM em parceria com a equipa Guivo promove uma sessão de orientação vocacional para alunos do 12.º ano. Utiliza a app Guivo para descobrir o teu perfil e receber orientação personalizada. Evento gratuito e aberto a todos.',
+      tipo: PostTipo.evento,
+      dataPublicacao: DateTime(2026, 2, 5),
+      dataExpiracao: DateTime(2026, 2, 20),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '🎯',
+    ),
+    FeedPost(
+      id: 'f_ustm_4',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Programa de Pós-Graduação em Gestão — USTM',
+      descricao:
+          'A USTM lança o Mestrado em Gestão de Negócios com especialização em Finanças, Marketing Digital e Recursos Humanos. Candidaturas abertas para profissionais e recém-licenciados.',
+      tipo: PostTipo.programa,
+      dataPublicacao: DateTime(2026, 1, 25),
+      dataExpiracao: DateTime(2026, 3, 30),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '📚',
+    ),
+    FeedPost(
+      id: 'f_ustm_5',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Feira de Empregabilidade USTM 2026',
+      descricao:
+          'A USTM realiza a sua Feira de Empregabilidade anual com a participação de mais de 40 empresas nacionais e internacionais. Oportunidade única para estágios, empregos e networking profissional.',
+      tipo: PostTipo.evento,
+      dataPublicacao: DateTime(2026, 3, 10),
+      dataExpiracao: DateTime(2026, 3, 25),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '💼',
+    ),
+    FeedPost(
+      id: 'f_ustm_6',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Jornadas Científicas de TI e Inovação',
+      descricao:
+          'A Faculdade de Ciências e Tecnologia da USTM promove as Jornadas Científicas 2026 com palestras sobre Inteligência Artificial, Cibersegurança e Transformação Digital em Moçambique.',
+      tipo: PostTipo.evento,
+      dataPublicacao: DateTime(2026, 4, 5),
+      dataExpiracao: DateTime(2026, 4, 18),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '💻',
+    ),
+    FeedPost(
+      id: 'f_ustm_7',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Semana Cultural USTM — Arte e Ciência',
+      descricao:
+          'Celebração da diversidade cultural moçambicana com exposições de arte, conferências científicas, desporto universitário e actividades culturais abertas à comunidade.',
+      tipo: PostTipo.evento,
+      dataPublicacao: DateTime(2026, 5, 1),
+      dataExpiracao: DateTime(2026, 5, 10),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: '🎨',
+    ),
+    // Outras instituições
+    FeedPost(
+      id: 'f_uem_1',
+      instituicao: 'Universidade Eduardo Mondlane',
+      titulo: 'Inscrições Abertas — UEM 2026',
+      descricao:
+          'A UEM abre candidaturas para o ano lectivo 2026 para todas as faculdades. Destaque para os novos cursos de Engenharia de Software e Ciências Ambientais.',
+      tipo: PostTipo.edital,
+      dataPublicacao: DateTime(2026, 1, 8),
+      dataExpiracao: DateTime(2026, 2, 28),
       url: 'https://www.uem.mz',
       logoInstituicao: '🏛️',
     ),
     FeedPost(
-      id: 'f2',
+      id: 'f_ucm_1',
       instituicao: 'Universidade Católica de Moçambique',
-      titulo: 'Bolsas de estudo disponíveis',
+      titulo: 'Bolsas Parciais UCM 2026',
       descricao:
-          'A UCM disponibiliza bolsas parciais para estudantes com mérito académico. Candidaturas até 31 de Janeiro.',
+          'A UCM disponibiliza bolsas de estudo parciais para estudantes com mérito académico nos cursos de Medicina, Direito e Educação. Candidaturas até 31 de Janeiro.',
       tipo: PostTipo.bolsa,
-      dataPublicacao: DateTime.now().subtract(const Duration(days: 2)),
-      logoInstituicao: '🎓',
+      dataPublicacao: DateTime(2026, 1, 5),
+      dataExpiracao: DateTime(2026, 1, 31),
+      url: 'https://www.ucm.ac.mz',
+      logoInstituicao: '✝️',
     ),
     FeedPost(
-      id: 'f3',
+      id: 'f_isutc_1',
       instituicao: 'ISUTC',
-      titulo: 'Feira de Carreiras 2025',
+      titulo: 'Novos Cursos de Engenharia — ISUTC',
       descricao:
-          'O ISUTC realiza a sua feira anual de carreiras com participação de mais de 30 empresas moçambicanas.',
-      tipo: PostTipo.evento,
-      dataPublicacao: DateTime.now().subtract(const Duration(days: 5)),
-      dataExpiracao: DateTime.now().add(const Duration(days: 10)),
-      logoInstituicao: '💼',
+          'O ISUTC lança os cursos de Engenharia Electrónica e Telecomunicações e Engenharia de Energias Renováveis para o ano lectivo 2026.',
+      tipo: PostTipo.noticia,
+      dataPublicacao: DateTime(2026, 1, 12),
+      url: 'https://www.isutc.ac.mz',
+      logoInstituicao: '⚡',
     ),
   ];
 
@@ -67,12 +156,17 @@ class FeedRepository {
   }
 
   Future<List<FeedPost>> getFeedOnce() async {
-    final snap = await _firestore
-        .collection('feed')
-        .orderBy('dataPublicacao', descending: true)
-        .limit(20)
-        .get();
-    return snap.docs.map((doc) => _fromMap(doc.data(), doc.id)).toList();
+    try {
+      final snap = await _firestore
+          .collection('feed')
+          .orderBy('dataPublicacao', descending: true)
+          .limit(20)
+          .get();
+      if (snap.docs.isEmpty) return _feedFallback();
+      return snap.docs.map((doc) => _fromMap(doc.data(), doc.id)).toList();
+    } catch (_) {
+      return _feedFallback();
+    }
   }
 
   FeedPost _fromMap(Map<String, dynamic> m, String id) => FeedPost(

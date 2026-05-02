@@ -30,7 +30,7 @@ class MyApp extends ConsumerWidget {
 
     return themeModeAsync.when(
       data: (themeMode) => MaterialApp.router(
-        title: 'Orientação Vocacional',
+        title: 'Guivo',
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: themeMode,

@@ -11,8 +11,10 @@ import '../../../features/auth/data/auth_repository.dart';
 import '../../../features/onboarding/application/onboarding_providers.dart';
 import '../../../features/results/application/results_providers.dart';
 import '../../../features/results/presentation/widgets/results_constants.dart';
+import '../application/feed_providers.dart';
 import 'widgets/feed_card.dart';
 import '../../../core/theme/toggle_theme.dart';
+import '../application/feed_providers.dart';
 
 final _homePhotoProvider = FutureProvider.autoDispose<String?>((ref) async {
   final user = ref.watch(authRepositoryProvider).currentUser;
@@ -36,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
     final user = ref.watch(authRepositoryProvider).currentUser;
     final sessionAsync = ref.watch(latestQuizSessionProvider);
     final photoAsync = ref.watch(_homePhotoProvider);
-    final feedAsync = ref.watch(feedStreamProvider);
+    final feedAsync = ref.watch(feedProvider);
     final theme = Theme.of(context);
 
     ref.listen(onboardingCompletoProvider, (_, next) {
