@@ -63,5 +63,6 @@ dev_dependencies:
 flutter:
   assets:
     - assets/animations/
+    - assets/institutions/
 
   uses-material-design: true

@@ -6,6 +6,7 @@ import '../../../../data/models/feed_post.dart';
 
 class FeedCard extends StatelessWidget {
   const FeedCard({super.key, required this.post});
+
   final FeedPost post;
 
   Color _tipoColor(PostTipo tipo) => switch (tipo) {
@@ -72,20 +73,30 @@ class FeedCard extends StatelessWidget {
                 Row(
                   children: [
                     // Logo/emoji da instituição
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: cor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text(
-                          post.logoInstituicao ?? '🏛️',
-                          style: const TextStyle(fontSize: 22),
-                        ),
-                      ),
-                    ),
+                    post.logoInstituicao != null
+                        ? Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            height: 44.0,
+                            width: 44.0,
+                            child: Image.asset(post.logoInstituicao!),
+                          )
+                        : Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: cor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '🏛️',
+                                style: const TextStyle(fontSize: 22),
+                              ),
+                            ),
+                          ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(

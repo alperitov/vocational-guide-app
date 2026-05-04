@@ -10,7 +10,6 @@ class FeedRepository {
   final FirebaseFirestore _firestore;
 
   List<FeedPost> _feedFallback() => [
-    // USTM — Destaque principal
     FeedPost(
       id: 'f_ustm_1',
       instituicao: 'Universidade São Tomás de Moçambique',
@@ -21,7 +20,7 @@ class FeedRepository {
       dataPublicacao: DateTime(2026, 1, 10),
       dataExpiracao: DateTime(2026, 2, 28),
       url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '🏛️',
+      logoInstituicao: 'assets/institutions/ustm.png',
     ),
     FeedPost(
       id: 'f_ustm_2',
@@ -33,7 +32,19 @@ class FeedRepository {
       dataPublicacao: DateTime(2026, 1, 20),
       dataExpiracao: DateTime(2026, 3, 15),
       url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '🎓',
+      logoInstituicao: 'assets/institutions/ustm.png',
+    ),
+    FeedPost(
+      id: 'f_uem_1',
+      instituicao: 'Universidade Eduardo Mondlane',
+      titulo: 'Inscrições Abertas — UEM 2026',
+      descricao:
+          'A UEM abre candidaturas para o ano lectivo 2026 para todas as faculdades. Destaque para os novos cursos de Engenharia de Software e Ciências Ambientais.',
+      tipo: PostTipo.edital,
+      dataPublicacao: DateTime(2026, 1, 8),
+      dataExpiracao: DateTime(2026, 2, 28),
+      url: 'https://www.uem.mz',
+      logoInstituicao: 'assets/institutions/uem.png',
     ),
     FeedPost(
       id: 'f_ustm_3',
@@ -45,19 +56,30 @@ class FeedRepository {
       dataPublicacao: DateTime(2026, 2, 5),
       dataExpiracao: DateTime(2026, 2, 20),
       url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '🎯',
+      logoInstituicao: 'assets/institutions/ustm.png',
     ),
     FeedPost(
-      id: 'f_ustm_4',
-      instituicao: 'Universidade São Tomás de Moçambique',
-      titulo: 'Programa de Pós-Graduação em Gestão — USTM',
+      id: 'f_isutc_1',
+      instituicao: 'ISUTC',
+      titulo: 'Novos Cursos de Engenharia — ISUTC',
+      descricao:
+          'O ISUTC lança os cursos de Engenharia Electrónica e Telecomunicações e Engenharia de Energias Renováveis para o ano lectivo 2026.',
+      tipo: PostTipo.noticia,
+      dataPublicacao: DateTime(2026, 1, 12),
+      url: 'https://www.isutc.ac.mz',
+      logoInstituicao: 'assets/institutions/isutc.png',
+    ),
+    FeedPost(
+      id: 'f_up_1',
+      instituicao: 'Universidade Pedagógica de Moçambique',
+      titulo: 'Programa de Pós-Graduação em Gestão — UP',
       descricao:
           'A USTM lança o Mestrado em Gestão de Negócios com especialização em Finanças, Marketing Digital e Recursos Humanos. Candidaturas abertas para profissionais e recém-licenciados.',
       tipo: PostTipo.programa,
       dataPublicacao: DateTime(2026, 1, 25),
       dataExpiracao: DateTime(2026, 3, 30),
-      url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '📚',
+      url: 'https://www.ustm.up.mz',
+      logoInstituicao: 'assets/institutions/up.png',
     ),
     FeedPost(
       id: 'f_ustm_5',
@@ -69,44 +91,7 @@ class FeedRepository {
       dataPublicacao: DateTime(2026, 3, 10),
       dataExpiracao: DateTime(2026, 3, 25),
       url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '💼',
-    ),
-    FeedPost(
-      id: 'f_ustm_6',
-      instituicao: 'Universidade São Tomás de Moçambique',
-      titulo: 'Jornadas Científicas de TI e Inovação',
-      descricao:
-          'A Faculdade de Ciências e Tecnologia da USTM promove as Jornadas Científicas 2026 com palestras sobre Inteligência Artificial, Cibersegurança e Transformação Digital em Moçambique.',
-      tipo: PostTipo.evento,
-      dataPublicacao: DateTime(2026, 4, 5),
-      dataExpiracao: DateTime(2026, 4, 18),
-      url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '💻',
-    ),
-    FeedPost(
-      id: 'f_ustm_7',
-      instituicao: 'Universidade São Tomás de Moçambique',
-      titulo: 'Semana Cultural USTM — Arte e Ciência',
-      descricao:
-          'Celebração da diversidade cultural moçambicana com exposições de arte, conferências científicas, desporto universitário e actividades culturais abertas à comunidade.',
-      tipo: PostTipo.evento,
-      dataPublicacao: DateTime(2026, 5, 1),
-      dataExpiracao: DateTime(2026, 5, 10),
-      url: 'https://www.ustm.ac.mz',
-      logoInstituicao: '🎨',
-    ),
-    // Outras instituições
-    FeedPost(
-      id: 'f_uem_1',
-      instituicao: 'Universidade Eduardo Mondlane',
-      titulo: 'Inscrições Abertas — UEM 2026',
-      descricao:
-          'A UEM abre candidaturas para o ano lectivo 2026 para todas as faculdades. Destaque para os novos cursos de Engenharia de Software e Ciências Ambientais.',
-      tipo: PostTipo.edital,
-      dataPublicacao: DateTime(2026, 1, 8),
-      dataExpiracao: DateTime(2026, 2, 28),
-      url: 'https://www.uem.mz',
-      logoInstituicao: '🏛️',
+      logoInstituicao: 'assets/institutions/ustm.png',
     ),
     FeedPost(
       id: 'f_ucm_1',
@@ -118,18 +103,31 @@ class FeedRepository {
       dataPublicacao: DateTime(2026, 1, 5),
       dataExpiracao: DateTime(2026, 1, 31),
       url: 'https://www.ucm.ac.mz',
-      logoInstituicao: '✝️',
+      logoInstituicao: 'assets/institutions/ucm.png',
     ),
     FeedPost(
-      id: 'f_isutc_1',
-      instituicao: 'ISUTC',
-      titulo: 'Novos Cursos de Engenharia — ISUTC',
+      id: 'f_ustm_6',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Jornadas Científicas de TI e Inovação',
       descricao:
-          'O ISUTC lança os cursos de Engenharia Electrónica e Telecomunicações e Engenharia de Energias Renováveis para o ano lectivo 2026.',
-      tipo: PostTipo.noticia,
-      dataPublicacao: DateTime(2026, 1, 12),
-      url: 'https://www.isutc.ac.mz',
-      logoInstituicao: '⚡',
+          'A Faculdade de Ciências e Tecnologia da USTM promove as Jornadas Científicas 2026 com palestras sobre Inteligência Artificial, Cibersegurança e Transformação Digital em Moçambique.',
+      tipo: PostTipo.evento,
+      dataPublicacao: DateTime(2026, 4, 5),
+      dataExpiracao: DateTime(2026, 4, 18),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: 'assets/institutions/ustm.png',
+    ),
+    FeedPost(
+      id: 'f_ustm_7',
+      instituicao: 'Universidade São Tomás de Moçambique',
+      titulo: 'Semana Cultural USTM — Arte e Ciência',
+      descricao:
+          'Celebração da diversidade cultural moçambicana com exposições de arte, conferências científicas, desporto universitário e actividades culturais abertas à comunidade.',
+      tipo: PostTipo.evento,
+      dataPublicacao: DateTime(2026, 5, 1),
+      dataExpiracao: DateTime(2026, 5, 10),
+      url: 'https://www.ustm.ac.mz',
+      logoInstituicao: 'assets/institutions/ustm.png',
     ),
   ];
 

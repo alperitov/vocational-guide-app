@@ -20,13 +20,35 @@ class ResultsScreen extends ConsumerStatefulWidget {
 class _ResultsScreenState extends ConsumerState<ResultsScreen> {
   bool _showCourses = false;
 
+  static const _areaParaCursos = {
+    'Gestão e Negócios': [
+      'Economia e Gestão',
+      'Comunicação e Negócios',
+      'Serviços',
+    ],
+    'Contabilidade e Finanças': ['Economia e Gestão'],
+    'Administração e Gestão Pública': ['Economia e Gestão', 'Serviços'],
+    'Saúde e Bem-estar': ['Saúde', 'Ciências da Saúde'],
+    'Educação e Serviço Social': ['Educação', 'Ciências Sociais'],
+    'Direito e Relações Internacionais': ['Direito', 'Ciências Sociais'],
+    'Tecnologia e Informática': ['Tecnologia', 'Engenharia'],
+    'Ciências e Investigação': ['Ciências Naturais', 'Tecnologia'],
+    'Engenharia e Construção': ['Engenharia'],
+    'Agricultura e Meio Ambiente': ['Agricultura', 'Ciências Naturais'],
+    'Artes, Design e Comunicação': ['Artes', 'Comunicação e Negócios'],
+    'Arquitectura e Urbanismo': ['Engenharia', 'Artes'],
+  };
+
   void _mostrarCursosDaArea(BuildContext context, String area, List cursos) {
-    final cursosDaArea = cursos
-        .where((c) => c.area == area || _areaMatch(c, area))
-        .toList();
+    // Busca as áreas de cursos correspondentes
+    final areasCorrespondentes = _areaParaCursos[area] ?? [];
+
+    // Filtra cursos que pertencem a essas áreas
+    final cursosDaArea = areasCorrespondentes.isEmpty
+        ? cursos
+        : kCursos.where((c) => areasCorrespondentes.contains(c.area)).toList();
 
     if (cursosDaArea.isEmpty) {
-      // Se não há cursos exactos, mostra os recomendados gerais
       setState(() => _showCourses = true);
       return;
     }
@@ -40,13 +62,6 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
       ),
       builder: (_) => _CursosBottomSheet(area: area, cursos: cursosDaArea),
     );
-  }
-
-  bool _areaMatch(dynamic curso, String area) {
-    final areaLower = area.toLowerCase();
-    final cursoArea = (curso.area as String).toLowerCase();
-    return areaLower.contains(cursoArea) ||
-        cursoArea.contains(areaLower.split(' ').first);
   }
 
   List<String> _sugerirCursos(CombinedProfile profile) {
@@ -869,7 +884,7 @@ class _CursosBottomSheet extends StatelessWidget {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                curso.instituicoes.take(2).join(' • '),
+                                curso.instituicoesIds.take(2).join(' • '),
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: theme.colorScheme.onSurfaceVariant,
