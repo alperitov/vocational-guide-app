@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uuid/uuid.dart';
 import '../models/favorite.dart';
 import 'database_helper.dart';
 import 'package:sqflite/sqflite.dart';

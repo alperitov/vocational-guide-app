@@ -11,6 +11,7 @@ class ProfileRepository {
   ProfileRepository(this._db);
 
   final DatabaseHelper _db;
+  Future<Database> get localDb => _db.database;
 
   Future<void> saveProfile(StudentProfile profile) async {
     final db = await _db.database;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Widget de prompt para mostrar cursos
 class CoursesPrompt extends StatelessWidget {
   const CoursesPrompt({
+    super.key,
     required this.onShowCourses,
     required this.onRetakeTests,
   });

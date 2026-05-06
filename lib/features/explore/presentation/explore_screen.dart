@@ -42,7 +42,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final courses = ref.watch(filteredCoursesProvider);
     final profAreas = ref.watch(professionAreasProvider);
     final courseAreas = ref.watch(courseAreasProvider);
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
     final areas = filter.tab == 0 ? profAreas : courseAreas;
 
     return Scaffold(

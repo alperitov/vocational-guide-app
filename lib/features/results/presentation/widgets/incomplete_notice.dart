@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '../../application/results_providers.dart';
 
 class IncompleteNotice extends StatelessWidget {
-  const IncompleteNotice({required this.profile, required this.onTap});
+  const IncompleteNotice({
+    super.key,
+    required this.profile,
+    required this.onTap,
+  });
   final CombinedProfile profile;
   final VoidCallback onTap;
 

@@ -6,7 +6,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/light_theme.dart';
-import '../../../data/remote/feed_repository.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import '../../../features/onboarding/application/onboarding_providers.dart';
 import '../../../features/results/application/results_providers.dart';
@@ -14,7 +13,6 @@ import '../../../features/results/presentation/widgets/results_constants.dart';
 import '../application/feed_providers.dart';
 import 'widgets/feed_card.dart';
 import '../../../core/theme/toggle_theme.dart';
-import '../application/feed_providers.dart';
 
 final _homePhotoProvider = FutureProvider.autoDispose<String?>((ref) async {
   final user = ref.watch(authRepositoryProvider).currentUser;
@@ -154,7 +152,7 @@ class HomeScreen extends ConsumerWidget {
                         final sorted = session.resultados.entries.toList()
                           ..sort((a, b) => b.value.compareTo(a.value));
                         final topDim = sorted.first.key;
-                        final topColor = dimensaoCores[topDim] ?? primaryColor;
+                        // final topColor = dimensaoCores[topDim] ?? primaryColor;
 
                         return Container(
                           padding: const EdgeInsets.all(16),

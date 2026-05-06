@@ -126,8 +126,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       hint: 'O teu nome',
                       prefixIcon: PhosphorIcon(PhosphorIcons.user()),
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return 'Introduz o teu nome';
+                        }
                         if (v.length < 3) return 'Nome muito curto';
                         return null;
                       },
@@ -142,8 +143,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: PhosphorIcon(PhosphorIcons.envelope()),
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return 'Introduz o teu email';
+                        }
                         if (!v.contains('@')) return 'Email inválido';
                         return null;
                       },
@@ -168,8 +170,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                       ),
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return 'Introduz a password';
+                        }
                         if (v.length < 6) return 'Mínimo 6 caracteres';
                         return null;
                       },

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../core/theme/light_theme.dart';
 import '../../../data/local/courses_data.dart';
 import '../../../data/local/institutions_data.dart';
@@ -9,7 +8,6 @@ import '../../../data/local/professions/data/professions_data.dart';
 import '../../../data/models/favorite.dart';
 import '../../../data/models/institution.dart';
 import '../application/favorites_providers.dart';
-import '../../../features/results/presentation/widgets/results_constants.dart';
 import '../../../data/models/profession.dart';
 
 class CourseDetailScreen extends ConsumerWidget {

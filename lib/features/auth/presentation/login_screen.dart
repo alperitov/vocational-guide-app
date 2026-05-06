@@ -48,8 +48,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     if (mounted) {
       final completou = await ref.read(onboardingCompletoProvider.future);
-      if (mounted)
+      if (mounted) {
         context.go(completou ? AppRoutes.home : AppRoutes.onboarding);
+      }
     }
   }
 
@@ -66,8 +67,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     if (mounted) {
       final completou = await ref.read(onboardingCompletoProvider.future);
-      if (mounted)
+      if (mounted) {
         context.go(completou ? AppRoutes.home : AppRoutes.onboarding);
+      }
     }
   }
 
@@ -154,8 +156,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: PhosphorIcon(PhosphorIcons.envelope()),
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return 'Introduz o teu email';
+                        }
                         if (!v.contains('@')) return 'Email inválido';
                         return null;
                       },
@@ -180,8 +183,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return 'Introduz a password';
+                        }
                         if (v.length < 6) return 'Mínimo 6 caracteres';
                         return null;
                       },

@@ -52,7 +52,9 @@ class AuthNotifier extends _$AuthNotifier {
       // Puxa dados do Firebase após login
       final uid = credential.user?.uid;
       if (uid != null) {
-        ref.read(firebaseSyncServiceProvider).pullProfile(uid);
+        final sync = ref.read(firebaseSyncServiceProvider);
+        sync.pullProfile(uid);
+        sync.pullQuizSessions(uid);
       }
       state = AuthStatus.authenticated;
       return null;
@@ -73,7 +75,9 @@ class AuthNotifier extends _$AuthNotifier {
       // Puxa dados do Firebase após login
       final uid = result.user?.uid;
       if (uid != null) {
-        ref.read(firebaseSyncServiceProvider).pullProfile(uid);
+        final sync = ref.read(firebaseSyncServiceProvider);
+        sync.pullProfile(uid);
+        sync.pullQuizSessions(uid);
       }
       state = AuthStatus.authenticated;
       return null;

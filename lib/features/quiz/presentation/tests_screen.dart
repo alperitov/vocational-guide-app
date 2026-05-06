@@ -14,7 +14,6 @@ class TestsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final user = ref.watch(authRepositoryProvider).currentUser;
     final riasecAsync = ref.watch(latestSessionByTypeProvider(QuizType.riasec));
     final gardnerAsync = ref.watch(
@@ -169,7 +168,6 @@ class TestsScreen extends ConsumerWidget {
       gardnerAsync,
       valoresAsync,
     ].where((a) => a.valueOrNull != null).length;
-    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

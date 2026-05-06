@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import '../../../core/router/app_router.dart';
 import '../../../data/models/student_profile.dart';
 import '../../../data/models/provincia.dart';
 import '../../../features/auth/application/auth_providers.dart';
 import '../../../features/auth/data/auth_repository.dart';
-import 'package:guivo/core/theme/toggle_theme.dart';
 import '../application/profile_providers.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -19,13 +16,11 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authRepositoryProvider).currentUser;
     final profileAsync = ref.watch(studentProfileProvider);
-    final themeMode = ref.watch(themeModeProvider).value ?? ThemeMode.light;
-    final isDark = themeMode == ThemeMode.dark;
     final theme = Theme.of(context);
     final photoAsync = ref.watch(_localPhotoProvider);
     final photoPath = photoAsync.valueOrNull;
 
-    String _getInitials(String? displayName) {
+    String getInitials(String? displayName) {
       if (displayName == null || displayName.isEmpty) return 'U';
       final parts = displayName.trim().split(' ');
       if (parts.length == 1) return parts[0][0].toUpperCase();
@@ -75,7 +70,7 @@ class ProfileScreen extends ConsumerWidget {
                             : null),
                   child: photoPath == null && user?.photoURL == null
                       ? Text(
-                          _getInitials(user?.displayName),
+                          getInitials(user?.displayName),
                           style: theme.textTheme.headlineMedium?.copyWith(
                             color: theme.colorScheme.onPrimaryContainer,
                           ),
@@ -478,7 +473,7 @@ class _ProfileEditSheetState extends ConsumerState<ProfileEditSheet> {
 
             // Província
             DropdownButtonFormField<String>(
-              value: _profile.provincia,
+              initialValue: _profile.provincia,
               decoration: InputDecoration(
                 labelText: 'Província',
                 border: OutlineInputBorder(
@@ -579,7 +574,7 @@ final _localPhotoProvider = FutureProvider.autoDispose<String?>((ref) async {
 });
 
 // Função de iniciais
-String _getInitials(String? displayName) {
+String getInitials(String? displayName) {
   if (displayName == null || displayName.isEmpty) return 'U';
   final parts = displayName.trim().split(' ');
   if (parts.length == 1) return parts[0][0].toUpperCase();

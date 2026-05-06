@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class ResultsConstants {
   static const Map<String, List<String>> areaParaCursos = {
     'Gestão e Negócios': [

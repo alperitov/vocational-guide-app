@@ -6,7 +6,6 @@ import '../../../core/router/app_router.dart';
 import '../../../core/theme/light_theme.dart';
 import '../../../data/models/favorite.dart';
 import '../../../features/explore/application/favorites_providers.dart';
-import 'package:go_router/go_router.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   const FavoritesScreen({super.key});
@@ -34,7 +33,6 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen>
   @override
   Widget build(BuildContext context) {
     final favoritesAsync = ref.watch(favoritesNotifierProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
       body: Column(

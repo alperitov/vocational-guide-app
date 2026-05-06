@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../local/profile_repository.dart';
-import '../local/database_helper.dart';
 import '../models/student_profile.dart';
 import '../models/quiz_models.dart';
 
@@ -13,6 +14,62 @@ class FirebaseSyncService {
 
   final FirebaseFirestore _firestore;
   final ProfileRepository _profileRepo;
+
+  Future<void> pullQuizSessions(String uid) async {
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('quiz_sessions')
+          .where('completado_em', isNull: false)
+          .get();
+
+      for (final doc in snapshot.docs) {
+        final session = _sessionFromMap(doc.data(), doc.id);
+        // Verifica se já existe localmente
+        final db = await _profileRepo.localDb;
+        final existing = await db.query(
+          'quiz_sessions',
+          where: 'id = ?',
+          whereArgs: [session.id],
+          limit: 1,
+        );
+        if (existing.isEmpty) {
+          await db.insert('quiz_sessions', _sessionToMap(session));
+        }
+      }
+    } catch (_) {}
+  }
+
+  Map<String, dynamic> _sessionToMap(QuizSession s) => {
+    'id': s.id,
+    'user_id': s.userId,
+    'iniciado_em': s.iniciadoEm.toIso8601String(),
+    'completado_em': s.completadoEm?.toIso8601String(),
+    'respostas': jsonEncode(s.respostas),
+    'resultados': jsonEncode(s.resultados),
+    'tipo': s.tipo.name,
+  };
+
+  QuizSession _sessionFromMap(Map<String, dynamic> m, String id) => QuizSession(
+    id: id,
+    userId: m['user_id'] as String,
+    iniciadoEm: DateTime.parse(m['iniciado_em'] as String),
+    completadoEm: m['completado_em'] != null
+        ? DateTime.tryParse(m['completado_em'] as String)
+        : null,
+    respostas: m['respostas'] != null
+        ? Map<String, int>.from(jsonDecode(m['respostas'] as String))
+        : {},
+    resultados: m['resultados'] != null
+        ? Map<String, double>.from(
+            (jsonDecode(m['resultados'] as String) as Map).map(
+              (k, v) => MapEntry(k, (v as num).toDouble()),
+            ),
+          )
+        : {},
+    tipo: QuizType.values.byName(m['tipo'] as String? ?? 'riasec'),
+  );
 
   // ── Perfil ──────────────────────────────────────────────
 
@@ -121,7 +178,7 @@ class FirebaseSyncService {
 
   // ── Serialização da Sessão ───────────────────────────────
 
-  Map<String, dynamic> _sessionToMap(QuizSession s) => {
+  Map<String, dynamic> sessionToMap(QuizSession s) => {
     'id': s.id,
     'user_id': s.userId,
     'iniciado_em': s.iniciadoEm.toIso8601String(),
@@ -131,7 +188,7 @@ class FirebaseSyncService {
     'updated_at': FieldValue.serverTimestamp(),
   };
 
-  QuizSession _sessionFromMap(Map<String, dynamic> m, String id) => QuizSession(
+  QuizSession sessionFromMap(Map<String, dynamic> m, String id) => QuizSession(
     id: id,
     userId: m['user_id'] as String,
     iniciadoEm: DateTime.parse(m['iniciado_em'] as String),
@@ -150,6 +207,8 @@ class FirebaseSyncService {
         : {},
   );
 }
+
+// --------------------- Quizzes -----------------------------------
 
 @Riverpod(keepAlive: true)
 FirebaseSyncService firebaseSyncService(Ref ref) {

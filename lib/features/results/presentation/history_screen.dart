@@ -20,7 +20,7 @@ class HistoryScreen extends ConsumerWidget {
   String _formatDate(DateTime dt) =>
       '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
 
-  String _topDimension(Map<String, double> resultados) {
+  String topDimension(Map<String, double> resultados) {
     if (resultados.isEmpty) return '—';
     final sorted = resultados.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
@@ -194,7 +194,6 @@ class HistoryScreen extends ConsumerWidget {
                         itemBuilder: (context, index) {
                           final session = completed[index];
                           final isLatest = index == 0;
-                          final topDim = _topDimension(session.resultados);
                           final cor = _tipoColor(session.tipo);
                           final sorted = session.resultados.entries.toList()
                             ..sort((a, b) => b.value.compareTo(a.value));

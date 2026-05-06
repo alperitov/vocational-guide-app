@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'results_constants.dart';
 
 class TestResultsSection extends StatelessWidget {
   const TestResultsSection({

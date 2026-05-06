@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/models/quiz_models.dart';
+import '../../../data/remote/firebase_sync_service.dart';
 import '../../../features/auth/data/auth_repository.dart';
 import '../../results/application/results_providers.dart';
 import '../data/quiz_questions.dart';
@@ -194,7 +195,8 @@ class QuizNotifier extends _$QuizNotifier {
 
     await ref.read(quizRepositoryProvider).saveSession(sessionCompleta);
     ref.invalidate(latestSessionByTypeProvider(session.tipo));
-
+    // Sincroniza com Firebase
+    ref.read(firebaseSyncServiceProvider).syncSession(sessionCompleta);
     state = state.copyWith(session: sessionCompleta, isComplete: true);
   }
 }

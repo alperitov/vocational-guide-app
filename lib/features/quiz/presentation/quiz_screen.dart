@@ -28,7 +28,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     final quizState = ref.watch(quizNotifierProvider);
-    final theme = Theme.of(context);
 
     ref.listen(quizNotifierProvider, (_, next) {
       if (next.isComplete) context.go(AppRoutes.tests);

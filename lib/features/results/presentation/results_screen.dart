@@ -74,7 +74,6 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(combinedProfileProvider);
-    final theme = Theme.of(context);
 
     return profileAsync.when(
       loading: () =>

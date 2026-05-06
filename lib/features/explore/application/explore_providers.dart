@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/local/courses_data.dart';
 import '../../../data/local/professions/data/professions_data.dart';
-import '../../../data/local/professions/professions_data.dart';
 import '../../../data/models/course.dart';
 import '../../../data/models/profession.dart';
 
