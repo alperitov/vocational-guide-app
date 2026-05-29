@@ -69,13 +69,25 @@ class TestsScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.history_rounded,
-                        color: Colors.white,
-                      ),
-                      tooltip: 'Histórico',
-                      onPressed: () => context.go(AppRoutes.history),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.bar_chart_rounded,
+                            color: Colors.white,
+                          ),
+                          tooltip: 'Ver resultados',
+                          onPressed: () => context.go(AppRoutes.results),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.history_rounded,
+                            color: Colors.white,
+                          ),
+                          tooltip: 'Histórico',
+                          onPressed: () => context.go(AppRoutes.history),
+                        ),
+                      ],
                     ),
                   ],
                 ),
